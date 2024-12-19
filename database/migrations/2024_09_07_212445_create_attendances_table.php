@@ -18,8 +18,8 @@ return new class extends Migration
             $table->boolean('is_present')->default(false);
             $table->timestamps();
 
-            $table->foreign('activity_id')->references('id')->on('activities')->onDelete('cascade');
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('activity_id')->references('ukm_id')->on('activities')->onDelete('cascade');
+            $table->foreign('user_id')->references('user_id')->on('users')->onDelete('cascade');
         });
     }
 

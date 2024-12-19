@@ -7,7 +7,9 @@ use Illuminate\Database\Eloquent\Model;
 
 class Ukm extends Model
 {
-    protected $fillable = ['name', 'description', 'profile_photo'];
+
+    protected $primaryKey = 'ukm_id';
+    protected $fillable = ['name_ukm', 'description', 'profile_photo'];
 
     // Relasi ke anggota (mahasiswa)
     public function members()

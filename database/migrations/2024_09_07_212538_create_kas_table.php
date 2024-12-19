@@ -18,8 +18,8 @@ return new class extends Migration
             $table->decimal('amount', 10, 2);
             $table->timestamps();
 
-            $table->foreign('ukm_id')->references('id')->on('ukms')->onDelete('cascade');
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('ukm_id')->references('ukm_id')->on('ukms')->onDelete('cascade');
+            $table->foreign('user_id')->references('user_id')->on('users')->onDelete('cascade');
         });
     }
 

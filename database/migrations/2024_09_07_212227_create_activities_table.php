@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('proof_photo')->nullable(); // Bukti foto kegiatan
             $table->timestamps();
 
-            $table->foreign('ukm_id')->references('id')->on('ukms')->onDelete('cascade');
+            $table->foreign('ukm_id')->references('ukm_id')->on('ukms')->onDelete('cascade');
         });
     }
 

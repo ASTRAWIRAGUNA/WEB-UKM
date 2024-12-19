@@ -15,11 +15,12 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('ukm_id'); // ID UKM
             $table->unsignedBigInteger('bph_ukm_id'); // ID user dengan role BPH UKM
+            $table->unsignedBigInteger('user_id'); // ID user dengan role BPH UKM
             $table->timestamps();
 
             // Foreign keys
-            $table->foreign('ukm_id')->references('id')->on('ukms')->onDelete('cascade');
-            $table->foreign('bph_ukm_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('ukm_id')->references('ukm_id')->on('ukms')->onDelete('cascade');
+            $table->foreign('bph_ukm_id')->references('user_id')->on('users')->onDelete('cascade');
         });
     }
     /**

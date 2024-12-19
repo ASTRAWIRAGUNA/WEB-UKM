@@ -6,14 +6,12 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
+
     public function up()
     {
         Schema::create('ukms', function (Blueprint $table) {
-            $table->id();
-            $table->string('name');
+            $table->id('ukm_id');
+            $table->string('name_ukm');
             $table->text('description')->nullable();
             $table->string('profile_photo')->nullable(); // Untuk profile UKM
             $table->timestamps();
