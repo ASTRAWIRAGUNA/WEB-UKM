@@ -13,7 +13,8 @@ return new class extends Migration
             $table->id('ukm_id');
             $table->string('name_ukm');
             $table->text('description')->nullable();
-            $table->string('profile_photo')->nullable(); // Untuk profile UKM
+            $table->string('profile_photo_ukm')->nullable(); // Untuk profile UKM
+            $table->foreignId('bph_id')->constrained('users', 'user_id')->onDelete('cascade');
             $table->timestamps();
         });
     }

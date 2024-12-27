@@ -38,12 +38,10 @@
             <thead>
               <tr>
                 <th scope="col">No</th>
-                <th scope="col">UKM lOGO</th>
+                <th scope="col">UKM Logo</th>
                 <th scope="col">Nama UKM</th>
-                <th scope="col">Ketua</th>
-                <th scope="col">Wakil</th>
-                <th scope="col">Bendahara</th>
-                <th scope="col">Sekertaris</th>
+                <th scope="col">Deskripsi UKM</th>
+                <th scope="col">Email UKM</th>
                 <th scope="col">Action</th>
               </tr>
             </thead>
@@ -51,9 +49,12 @@
               @foreach ($ukms as $ukm)
               <tr>
                 <th scope="row">{{ $loop->iteration }}</th>
-                <td>{{ $ukm->nim }}</td>
-                <td>{{ $ukm->email }}</td>
-                <td>{{ $ukm->text_password }}</td>
+                <td class="w-25 mx-auto"><img src="{{ asset('storage/profile_photo_ukm/'. $ukm->profile_photo_ukm )}}" alt="" style="width: 20%"></td>
+                <td class="mx-auto">{{ $ukm->name_ukm }}</td>
+                <td class="mx-auto">{{ $ukm->description }}</td>
+                <td>{{ $ukm->bph->email ?? 'Tidak ada BPH' }}</td> <!-- Menampilkan email BPH -->
+
+
                 <td>
                   <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#updateUkm-{{ $ukm->ukm_id }}"><i class="ri-pencil-line text-white"></i></button>
                   <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteUkm-{{ $ukm->ukm_id }}"><i class="ri-delete-bin-6-line text-white"></i></button>
@@ -75,11 +76,11 @@
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
-          <form method="POST">
+          <form action="{{ route('manage-ukm.store') }}" method="POST" enctype="multipart/form-data">
             @csrf
             <div class="mb-3">
               <label for="exampleInputEmail1" class="form-label">Logo UKM</label>
-              <input type="file" class="form-control shadow-none" id="profile_photo" name="profile_photo" aria-describedby="emailHelp">
+              <input type="file" class="form-control shadow-none" id="profile_photo_ukm" name="profile_photo_ukm" aria-describedby="emailHelp">
             </div>
             <div class="mb-3">
               <label for="exampleInputEmail1" class="form-label">Nama UKM</label>
@@ -89,38 +90,16 @@
               <label for="exampleInputEmail1" class="form-label">Deskripsi UKM</label>
               <textarea type="text" class="form-control shadow-none" name="description" id="exampleInputEmail1" aria-describedby="emailHelp"></textarea>
             </div>  
-            <div class="col-md-3 w-100">
-              <label for="validationCustom04" class="form-label">Pilih Ketua</label>
-              <select class="form-select" id="validationCustom04" name="role_ketua">
-                @foreach ($bph_ukm_users as $user)
-                  <option value="{{ $user->user_id }}">{{ $user->email }}</option>
-                @endforeach
+            <div class="mb-3">
+              <label for="bph_id" class="form-label">BPH UKM</label>
+              <select class="form-select" id="bph_id" name="bph_id" required>
+                  @foreach($bph_ukm_users as $user)
+                      @if($user->role == 'BPH_UKM') <!-- Pastikan hanya memilih user dengan role BPH -->
+                          <option value="{{ $user->user_id }}">{{ $user->email }}</option> <!-- Menampilkan email BPH -->
+                      @endif
+                  @endforeach
               </select>
-            </div>
-            <div class="col-md-3 w-100">
-              <label for="validationCustom04" class="form-label">Pilih Wakil</label>
-              <select class="form-select" id="validationCustom04" name="role_wakil" required>
-                @foreach ($bph_ukm_users as $user)
-                  <option value="{{ $user->user_id }}">{{ $user->email }}</option>
-                @endforeach
-              </select>
-            </div>
-            <div class="col-md-3 w-100">
-              <label for="validationCustom04" class="form-label">Pilih Bendahara</label>
-              <select class="form-select" id="validationCustom04" name="role_bendahara" required>
-                @foreach ($bph_ukm_users as $user)
-                  <option value="{{ $user->user_id }}">{{ $user->email }}</option>
-                @endforeach
-              </select>
-            </div>
-            <div class="col-md-3 w-100">
-              <label for="validationCustom04" class="form-label">Pilih Sekertaris</label>
-              <select class="form-select" id="validationCustom04" name="role_sekertaris" required>
-                @foreach ($bph_ukm_users as $user)
-                  <option value="{{ $user->user_id }}">{{ $user->email }}</option>
-                @endforeach
-              </select>
-            </div>
+          </div>          
             <div class="modal-footer">
               <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
               <button type="submit" class="btn btn-primary">Save changes</button>
@@ -141,27 +120,30 @@
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
-          <form method="POST">
+          <form method="POST" action="{{ route('manage-ukm.update', $ukm->ukm_id) }}" enctype="multipart/form-data">
             @csrf
-            @method('PUT') <!-- Method untuk update -->
+            @method('PUT')
             <div class="mb-3">
-              <label for="nim-{{ $ukm->ukm_id }}" class="form-label">NIM</label>
-              <input type="text" class="form-control shadow-none" id="nim-{{ $ukm->ukm_id }}" name="nim" value="{{ $ukm->nim }}" required>
+              <label for="profile_photo_ukm-{{ $ukm->ukm_id }}" class="form-label">Logo UKM</label>
+              <img src="{{ asset('storage/profile_photo_ukm/' . $ukm->profile_photo_ukm) }}" alt="Logo UKM" class="img-thumbnail mb-2" style="max-width: 100px;">
+              <input type="file" class="form-control shadow-none" id="profile_photo_ukm-{{ $ukm->ukm_id }}" name="profile_photo_ukm">
             </div>
             <div class="mb-3">
-              <label for="email-{{ $ukm->ukm_id }}" class="form-label">Email</label>
-              <input type="email" class="form-control shadow-none" id="email-{{ $ukm->ukm_id }}" name="email" value="{{ $ukm->email }}" required>
+              <label for="name_ukm-{{ $ukm->ukm_id }}" class="form-label">Nama UKM</label>
+              <input type="text" class="form-control shadow-none" id="name_ukm-{{ $ukm->ukm_id }}" name="name_ukm" value="{{ $ukm->name_ukm }}" required>
             </div>
             <div class="mb-3">
-              <label for="password-{{ $ukm->ukm_id }}" class="form-label">Password (Isi jika ingin mengganti)</label>
-              <input type="text" class="form-control shadow-none" id="password-{{ $ukm->ukm_id }}" name="text_password" value="{{ $ukm->text_password }}">
+              <label for="description-{{ $ukm->ukm_id }}" class="form-label">Deskripsi UKM</label>
+              <textarea class="form-control shadow-none" name="description" id="description-{{ $ukm->ukm_id }}" required>{{ $ukm->description }}</textarea>
             </div>
             <div class="mb-3">
-              <label for="role-{{ $ukm->ukm_id }}" class="form-label">Role</label>
-              <select class="form-select" id="role-{{ $ukm->ukm_id }}" name="role" required>
-                <option value="Admin" {{ $ukm->role == 'Admin' ? 'selected' : '' }}>Admin</option>
-                <option value="BPH_UKM" {{ $ukm->role == 'BPH_UKM' ? 'selected' : '' }}>BPH UKM</option>
-                <option value="Mahasiswa" {{ $ukm->role == 'Mahasiswa' ? 'selected' : '' }}>Mahasiswa</option>
+              <label for="bph_id-{{ $ukm->ukm_id }}" class="form-label">BPH UKM</label>
+              <select class="form-select shadow-none" id="bph_id-{{ $ukm->ukm_id }}" name="bph_id" required>
+                @foreach ($bph_ukm_users as $user)
+                  <option value="{{ $user->user_id }}" {{ $ukm->bph_id == $user->user_id ? 'selected' : '' }}>
+                    {{ $user->email }}
+                  </option>
+                @endforeach
               </select>
             </div>
             <div class="modal-footer">
@@ -185,21 +167,21 @@
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
-          <form method="POST">
+          <form method="POST" action="{{ route('manage-ukm.destroy', $ukm->ukm_id) }}">
             @csrf
             @method('DELETE')
-            Apakah kamu yakin ingin mendelete Ukm {{$ukm->name_ukm}}
+            Apakah kamu yakin ingin menghapus UKM <strong>{{ $ukm->name_ukm }}</strong>?
             <div class="modal-footer">
               <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
               <button type="submit" class="btn btn-danger">Hapus UKM</button>
             </div>
           </form>
         </div>
-        
       </div>
     </div>
   </div>
   @endforeach
+
   
 
 

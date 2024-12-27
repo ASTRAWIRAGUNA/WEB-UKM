@@ -16,6 +16,6 @@ class Activity extends Model
 
     public function attendances()
     {
-        return $this->hasMany(Attendances::class);
+        return $this->hasMany(Attendances::class, 'activity_id');
     }
 }

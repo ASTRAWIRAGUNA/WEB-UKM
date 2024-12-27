@@ -43,16 +43,17 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
-
-    public function bphUkms()
+    // Relasi ke Ukm Sebagai BphUKM
+    public function bphUkm()
     {
-        return $this->belongsToMany(Ukm::class, 'bph_ukm_ukm', 'bph_ukm_id', 'ukm_id')->withTimestamps();
+        return $this->hasOne(Ukm::class, 'bph_id');
     }
 
+
     // Relasi ke UKM (sebagai anggota)
-    public function ukms()
+    public function ukm()
     {
-        return $this->belongsToMany(Ukm::class, 'ukm_user')->withTimestamps();
+        return $this->belongsTo(Ukm::class, 'ukm_id', 'ukm_id'); // user belongs to a single ukm
     }
 
     // Relasi ke laporan yang dikirim oleh BPH UKM

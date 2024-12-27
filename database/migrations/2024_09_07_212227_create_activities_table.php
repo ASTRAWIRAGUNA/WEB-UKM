@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('activities', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('ukm_id');
+            $table->foreignId('ukm_id')->constrained('ukms', 'ukm_id')->onDelete('cascade');
             $table->string('name');
             $table->date('date');
             $table->string('proof_photo')->nullable(); // Bukti foto kegiatan

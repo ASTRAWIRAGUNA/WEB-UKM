@@ -9,7 +9,7 @@ class Ukm extends Model
 {
 
     protected $primaryKey = 'ukm_id';
-    protected $fillable = ['name_ukm', 'description', 'profile_photo'];
+    protected $fillable = ['name_ukm', 'description', 'profile_photo_ukm', 'bph_id'];
 
     // Relasi ke anggota (mahasiswa)
     public function members()
@@ -18,10 +18,13 @@ class Ukm extends Model
     }
 
     // Relasi ke BPH UKM
-    public function bphs()
+    public function bph()
     {
-        return $this->belongsToMany(User::class, 'bph_ukm_ukm', 'ukm_id', 'bph_ukm_id')->withTimestamps();
+        return $this->belongsTo(User::class, 'bph_id');
     }
+
+
+
 
     // Relasi ke kegiatan
     public function activities()
@@ -44,6 +47,6 @@ class Ukm extends Model
     // Relasi ke absensi kegiatan UKM
     public function absences()
     {
-        return $this->hasManyThrough(Attendances::class, Activity::class);
+        return $this->hasManyThrough(Attendances::class, Activity::class)->onDelete('cascade');
     }
 }
