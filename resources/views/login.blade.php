@@ -42,7 +42,7 @@
 <div class="login-container">
     <div class="login-box">
         <h2>Login</h2>
-        <form action="#" method="POST">
+        <form action="{{ route('auth.login') }}" method="POST">
             @csrf
             <div class="mb-3">
                 <label for="nim" class="form-label">NIM</label>
