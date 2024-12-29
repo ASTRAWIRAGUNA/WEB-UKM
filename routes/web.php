@@ -6,6 +6,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardAdminController;
 use App\Http\Controllers\DashboardUkmController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\MahasiswaController;
 use App\Http\Middleware\RoleMiddleware;
 use Illuminate\Support\Facades\Route;
 
@@ -31,3 +32,6 @@ Route::middleware(['auth', RoleMiddleware::class . ':BPH_UKM'])->group(function 
 Route::middleware(['auth', RoleMiddleware::class . ':Mahasiswa'])->group(function () {
     Route::resource('/home', HomeController::class);
 });
+
+// Route untuk manage mahasiswa
+Route::get('/mahasiswa/manage', [MahasiswaController::class, 'manageAnggota'])->name('mahasiswa.manage');
