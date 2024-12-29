@@ -11,7 +11,7 @@
   <div class="wrapper">
     @include('partials.sideBarBph')
     <div class="main p-3">
-      {{ $ukm->ukm_id }}
+
 
       <div id="ukmDisplay">
         <div class="d-flex align-items-center">
@@ -32,7 +32,7 @@
 
       <!-- Form Edit -->
       {{-- <form id="ukmForm" class="d-none mt-4" method="POST" action="{{ route('update.profile', $ukm->ukm_id) }}" enctype="multipart/form-data"> --}}
-        <form id="ukmForm" class="d-none mt-4" method="POST" action="{{ route('bph.update.profile', $ukm->ukm_id) }}" enctype="multipart/form-data">
+        <form id="ukmForm" class="d-none mt-4" method="POST" action="{{ route('dashboard-ukm.update', $ukm->ukm_id) }}" enctype="multipart/form-data">
         @csrf
         @method('PUT')
         <div class="mb-4">
