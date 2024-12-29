@@ -24,6 +24,6 @@ class RoleMiddleware
         }
 
         // Redirect jika tidak memiliki akses
-        return redirect('/login')->withErrors('Anda tidak memiliki akses.');
+        return redirect()->route('login')->withErrors('Anda tidak memiliki akses.');
     }
 }

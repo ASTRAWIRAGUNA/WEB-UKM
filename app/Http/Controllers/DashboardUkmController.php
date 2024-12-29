@@ -17,12 +17,13 @@ class DashboardUkmController extends Controller
         return view('bph.dashboardBPH', compact('ukm'));
     }
 
-    public function update(Request $request, $ukm_id)
+    public function update(Request $request, $manage_ukm)
     {
+
         $user = Auth::user();
 
         // Pastikan user yang login hanya bisa mengupdate UKM yang terkait dengan mereka
-        $ukm = Ukm::where('id', $ukm_id)->where('user_id', $user->id)->firstOrFail();
+        $ukm = Ukm::where('ukm_id', $manage_ukm)->where('bph_id', $user->user_id)->first();
 
         $request->validate([
             'profile_photo_ukm' => 'nullable|image|mimes:jpeg,jpg,png|max:2048',
@@ -49,7 +50,6 @@ class DashboardUkmController extends Controller
 
         // Simpan perubahan
         $ukm->save();
-
         return redirect()->route('dashboard-ukm.index')->with('success', 'Profile UKM updated successfully.');
     }
 }

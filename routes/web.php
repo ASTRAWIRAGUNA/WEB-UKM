@@ -24,9 +24,13 @@ Route::middleware(['auth', RoleMiddleware::class . ':Admin'])->group(function ()
 
 // Route untuk BPH_UKM
 Route::middleware(['auth', RoleMiddleware::class . ':BPH_UKM'])->group(function () {
+    // Route::resource('/dashboard-ukm', DashboardUkmController::class);
+    // Route::put('/update/{ukm_id}', [DashboardUkmController::class, 'update'])->name('bph.update.profile');
     Route::resource('/dashboard-ukm', DashboardUkmController::class);
-    Route::put('update/{ukm_id}', [DashboardUkmController::class, 'update'])->name('bph.update.profile');
 });
+
+
+
 
 // Route untuk Mahasiswa
 Route::middleware(['auth', RoleMiddleware::class . ':Mahasiswa'])->group(function () {
