@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Logs;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -37,6 +38,14 @@ class UserController extends Controller
             'role' => $request->role,
         ]);
 
+        $currrent_user = Auth::user()->email;
+        $logs = Logs::create([
+            'user_id' => Auth::id(),
+            'activity' => "$currrent_user mengupdate user baru $user",
+        ]);
+
+        $logs->save();
+
         $user->save();
 
         return redirect()->route('manage-user.index')->with('success', 'User Created Successfully');
@@ -54,6 +63,14 @@ class UserController extends Controller
             $user->text_password = $request->input('text_password');
             $user->password = Hash::make($request->input('text_password'));
         }
+
+        $currrent_user = Auth::user()->email;
+        $logs = Logs::create([
+            'user_id' => Auth::id(),
+            'activity' => "$currrent_user mengupdate user baru $user",
+        ]);
+
+        $logs->save();
 
         $user->save();
 
@@ -73,6 +90,14 @@ class UserController extends Controller
         if ($loggedInUser && $loggedInUser->user_id === $userToDelete->user_id) {
             return redirect()->route('master-user.index')->with('alert', 'anda tidak dapat menghapus akun Anda sendiri.');
         }
+
+        $currrent_user = Auth::user()->email;
+        $logs = Logs::create([
+            'user_id' => Auth::id(),
+            'activity' => "$currrent_user mengupdate ukm baru $userToDelete",
+        ]);
+
+        $logs->save();
 
         $userToDelete->delete();
 

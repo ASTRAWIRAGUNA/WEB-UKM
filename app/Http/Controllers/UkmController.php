@@ -6,6 +6,8 @@ use App\Models\Ukm;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Auth;
+use App\Models\Logs;
 
 class UkmController extends Controller
 {
@@ -41,6 +43,14 @@ class UkmController extends Controller
             'registration_status' => 'deactivated',
         ]);
 
+        $currrent_user = Auth::user()->email;
+        $logs = Logs::create([
+            'user_id' => Auth::id(),
+            'activity' => "$currrent_user menambah ukm baru $request->imageName, $request->name_ukm, $request->description, $$request->bph_id",
+        ]);
+
+        $logs->save();
+
         return redirect()->route('manage-ukm.index')->with('success', 'UKM Created Successfully');
     }
 
@@ -72,6 +82,15 @@ class UkmController extends Controller
         $ukm->description = $request->description;
         $ukm->bph_id = $request->bph_id;
 
+        $currrent_user = Auth::user()->email;
+        $logs = Logs::create([
+            'user_id' => Auth::id(),
+            'activity' => "$currrent_user mengupdate ukm baru $ukm",
+        ]);
+
+        $logs->save();
+
+
         $ukm->save();
 
         return redirect()->route('manage-ukm.index')->with('success', 'UKM Updated Successfully');
@@ -82,9 +101,19 @@ class UkmController extends Controller
     {
         $ukm = Ukm::findOrFail($ukm_id);
 
+        $currrent_user = Auth::user()->email;
+        $logs = Logs::create([
+            'user_id' => Auth::id(),
+            'activity' => "$currrent_user mengupdate ukm baru $ukm",
+        ]);
+
+        $logs->save();
+
         if ($ukm->profile_photo_ukm && Storage::exists('public/profile_photo_ukm/' . $ukm->profile_photo_ukm)) {
             Storage::delete('public/profile_photo_ukm/' . $ukm->profile_photo_ukm);
         }
+
+
 
         $ukm->delete();
 

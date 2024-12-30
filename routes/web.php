@@ -6,6 +6,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardAdminController;
 use App\Http\Controllers\DashboardUkmController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\LogActivityController;
 use App\Http\Controllers\MahasiswaController;
 use App\Http\Middleware\RoleMiddleware;
 use Illuminate\Support\Facades\Route;
@@ -21,6 +22,7 @@ Route::middleware(['auth', RoleMiddleware::class . ':Admin'])->group(function ()
     Route::post('/dashboard-admin/toggle-all-registration-status', [DashboardAdminController::class, 'toggleAllRegistrationStatus'])->name('dashboard-admin.toggleAllRegistrationStatus');
     // Route::resource('/manage-user', UserController::class);
     Route::resource('/manage-ukm', UkmController::class);
+    Route::resource('/log-activity', LogActivityController::class);
 });
 
 // Route untuk BPH_UKM
