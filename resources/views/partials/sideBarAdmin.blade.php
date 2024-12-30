@@ -9,19 +9,27 @@
     </div>
     <ul class="sidebar-nav">
         <li class="sidebar-item">
-            <a href="#" class="sidebar-link">
+            <a href="{{ route('dashboard-admin.index') }}" class="sidebar-link">
                 <i class="lni lni-user"></i>
                 <span>Dashboard</span>
             </a>
         </li>
         <li class="sidebar-item">
-            <a href="#" class="sidebar-link">
+            <a href="{{ route('manage-user.index') }}" class="sidebar-link">
                 <i class="lni lni-agenda"></i>
                 <span>Manage User</span>
             </a>
         </li>
         <li class="sidebar-item">
-            <a href="#" class="sidebar-link collapsed has-dropdown" data-bs-toggle="collapse"
+            <a href="{{ route('manage-ukm.index') }}" class="sidebar-link collapsed has-dropdown" data-bs-toggle="collapse"
+                data-bs-target="#auth" aria-expanded="false" aria-controls="auth">
+                <i class="lni lni-protection"></i>
+                <span>Manage UKM</span>
+            </a>
+           
+        </li>
+        <li class="sidebar-item">
+            <a href="{{ route('manage-laporan-ukm.index') }}" class="sidebar-link collapsed has-dropdown" data-bs-toggle="collapse"
                 data-bs-target="#auth" aria-expanded="false" aria-controls="auth">
                 <i class="lni lni-protection"></i>
                 <span>Laporan UKM</span>
@@ -29,13 +37,20 @@
            
         </li>
         <li class="sidebar-item">
-            <a href="#" class="sidebar-link collapsed has-dropdown" data-bs-toggle="collapse"
+            <a href="{{ route('manage-ukm.index') }}" class="sidebar-link collapsed has-dropdown" data-bs-toggle="collapse"
+                data-bs-target="#auth" aria-expanded="false" aria-controls="auth">
+                <i class="lni lni-protection"></i>
+                <span>Laporan UKM</span>
+            </a>
+        </li>
+        <li class="sidebar-item">
+            <a href="{{ route('log-activity.index') }}" class="sidebar-link collapsed has-dropdown" data-bs-toggle="collapse"
                 data-bs-target="#multi" aria-expanded="false" aria-controls="multi">
                 <i class="lni lni-layout"></i>
                 <span>Log Activity</span>
             </a>
-            
         </li>
+        
         
     </ul>
     <div class="sidebar-footer">
@@ -43,7 +58,7 @@
             @csrf
         </form>
         
-        <a href="#" class="sidebar-link" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+        <a href="{{ route('auth.logout') }}" class="sidebar-link" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
             <i class="lni lni-exit"></i>
             <span>Logout</span>
         </a>

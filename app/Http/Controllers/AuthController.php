@@ -61,14 +61,21 @@ class AuthController extends Controller
 
     public function logout()
     {
-        Auth::logout();
-        $currrent_user = Auth::user()->email;
-        $logs = Logs::create([
-            'user_id' => Auth::id(),
-            'activity' => "$currrent_user melakukan login",
-        ]);
+        // Ambil data pengguna sebelum logout
+        $current_user = Auth::user();
 
-        $logs->save();
-        return redirect()->route('login');
+        if ($current_user) {
+            // Simpan aktivitas ke dalam log
+            Logs::create([
+                'user_id' => $current_user->user_id, // Pastikan field user_id di table Logs ada
+                'activity' => "{$current_user->email} melakukan logout",
+            ]);
+        }
+
+        // Proses logout setelah log dibuat
+        Auth::logout();
+
+        // Redirect ke halaman login atau tempat lain
+        return redirect()->route('login')->with('success', 'Berhasil logout');
     }
 }

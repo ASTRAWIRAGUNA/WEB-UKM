@@ -15,4 +15,9 @@ class HomeController extends Controller
         // Mengirimkan data ke view
         return view('mahasiswa.home', compact('ukms'));
     }
+
+    public function detail()
+    {
+        return view('mahasiswa.detail');
+    }
 }

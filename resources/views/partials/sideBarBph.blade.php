@@ -9,19 +9,19 @@
     </div>
     <ul class="sidebar-nav">
         <li class="sidebar-item">
-            <a href="#" class="sidebar-link">
+            <a href="{{ route('dashboard-ukm.index')}}" class="sidebar-link">
                 <i class="lni lni-user"></i>
                 <span>Dashboard</span>
             </a>
         </li>
         <li class="sidebar-item">
-            <a href="#" class="sidebar-link">
+            <a href="{{route('manage-anggota.index')}}" class="sidebar-link">
                 <i class="lni lni-agenda"></i>
                 <span>Manage Anggota</span>
             </a>
         </li>
         <li class="sidebar-item">
-            <a href="#" class="sidebar-link collapsed has-dropdown" data-bs-toggle="collapse"
+            <a href="{{route('manage-kegiatan-ukm.index')}}" class="sidebar-link collapsed has-dropdown" data-bs-toggle="collapse"
                 data-bs-target="#auth" aria-expanded="false" aria-controls="auth">
                 <i class="lni lni-protection"></i>
                 <span>Manage Kegiatan</span>
@@ -29,7 +29,7 @@
             
         </li>
         <li class="sidebar-item">
-            <a href="#" class="sidebar-link collapsed has-dropdown" data-bs-toggle="collapse"
+            <a href="{{route('manage-kas-ukm.index')}}" class="sidebar-link collapsed has-dropdown" data-bs-toggle="collapse"
                 data-bs-target="#multi" aria-expanded="false" aria-controls="multi">
                 <i class="lni lni-layout"></i>
                 <span>Manage Kas</span>
