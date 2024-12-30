@@ -21,31 +21,27 @@
             </a>
         </li>
         <li class="sidebar-item">
-            <a href="{{ route('manage-ukm.index') }}" class="sidebar-link collapsed has-dropdown" data-bs-toggle="collapse"
-                data-bs-target="#auth" aria-expanded="false" aria-controls="auth">
+            <a href="{{ route('manage-ukm.index') }}" class="sidebar-link">
                 <i class="lni lni-protection"></i>
                 <span>Manage UKM</span>
             </a>
            
         </li>
         <li class="sidebar-item">
-            <a href="{{ route('manage-laporan-ukm.index') }}" class="sidebar-link collapsed has-dropdown" data-bs-toggle="collapse"
-                data-bs-target="#auth" aria-expanded="false" aria-controls="auth">
+            <a href="{{ route('manage-laporan-ukm.index') }}" class="sidebar-link">
                 <i class="lni lni-protection"></i>
                 <span>Laporan UKM</span>
             </a>
            
         </li>
         <li class="sidebar-item">
-            <a href="{{ route('manage-ukm.index') }}" class="sidebar-link collapsed has-dropdown" data-bs-toggle="collapse"
-                data-bs-target="#auth" aria-expanded="false" aria-controls="auth">
+            <a href="{{ route('manage-ukm.index') }}" class="sidebar-link">
                 <i class="lni lni-protection"></i>
                 <span>Laporan UKM</span>
             </a>
         </li>
         <li class="sidebar-item">
-            <a href="{{ route('log-activity.index') }}" class="sidebar-link collapsed has-dropdown" data-bs-toggle="collapse"
-                data-bs-target="#multi" aria-expanded="false" aria-controls="multi">
+            <a href="{{ route('log-activity.index') }}" class="sidebar-link">
                 <i class="lni lni-layout"></i>
                 <span>Log Activity</span>
             </a>
