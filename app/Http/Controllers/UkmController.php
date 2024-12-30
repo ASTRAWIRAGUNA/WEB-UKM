@@ -38,6 +38,7 @@ class UkmController extends Controller
             'name_ukm' => $request->name_ukm,
             'description' => $request->description,
             'bph_id' => $request->bph_id, // Mengaitkan BPH dengan UKM
+            'registration_status' => 'deactivated',
         ]);
 
         return redirect()->route('manage-ukm.index')->with('success', 'UKM Created Successfully');
@@ -52,6 +53,7 @@ class UkmController extends Controller
             'name_ukm' => 'required|string|max:255',
             'description' => 'required|string|max:255',
             'bph_id' => 'required|exists:users,user_id',
+            'registration_status' => 'in:active,deactivated',
         ]);
 
         if ($request->hasFile('profile_photo_ukm')) {

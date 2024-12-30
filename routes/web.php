@@ -18,6 +18,7 @@ Route::resource('/manage-user', UserController::class);
 
 Route::middleware(['auth', RoleMiddleware::class . ':Admin'])->group(function () {
     Route::resource('/dashboard-admin', DashboardAdminController::class);
+    Route::post('/dashboard-admin/toggle-all-registration-status', [DashboardAdminController::class, 'toggleAllRegistrationStatus'])->name('dashboard-admin.toggleAllRegistrationStatus');
     // Route::resource('/manage-user', UserController::class);
     Route::resource('/manage-ukm', UkmController::class);
 });
@@ -28,9 +29,6 @@ Route::middleware(['auth', RoleMiddleware::class . ':BPH_UKM'])->group(function 
     // Route::put('/update/{ukm_id}', [DashboardUkmController::class, 'update'])->name('bph.update.profile');
     Route::resource('/dashboard-ukm', DashboardUkmController::class);
 });
-
-
-
 
 // Route untuk Mahasiswa
 Route::middleware(['auth', RoleMiddleware::class . ':Mahasiswa'])->group(function () {

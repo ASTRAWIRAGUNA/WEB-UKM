@@ -9,9 +9,9 @@ class Ukm extends Model
 {
 
     protected $primaryKey = 'ukm_id';
-    protected $fillable = ['name_ukm', 'description', 'profile_photo_ukm', 'bph_id'];
+    protected $fillable = ['name_ukm', 'description', 'profile_photo_ukm', 'bph_id', 'registration_status'];
 
-    // Relasi ke anggota (mahasiswa)
+    // Relasi ke anggota (mahasiswa)a
     public function members()
     {
         return $this->belongsToMany(User::class, 'ukm_user')->withTimestamps();
@@ -22,8 +22,6 @@ class Ukm extends Model
     {
         return $this->belongsTo(User::class, 'bph_id');
     }
-
-
 
 
     // Relasi ke kegiatan

@@ -15,6 +15,7 @@ return new class extends Migration
             $table->text('description')->nullable();
             $table->string('profile_photo_ukm')->nullable(); // Untuk profile UKM
             $table->foreignId('bph_id')->constrained('users', 'user_id')->onDelete('cascade');
+            $table->enum('registration_status', ['active', 'deactivated'])->default('deactivated');
             $table->timestamps();
         });
     }
