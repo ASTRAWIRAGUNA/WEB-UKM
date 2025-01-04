@@ -2,20 +2,45 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * Class Activity
+ *
+ * @property $id
+ * @property $ukm_id
+ * @property $name
+ * @property $date
+ * @property $proof_photo
+ * @property $created_at
+ * @property $updated_at
+ *
+ * @property Ukm $ukm
+ * @package App
+ * @mixin \Illuminate\Database\Eloquent\Builder
+ */
 class Activity extends Model
 {
-    protected $fillable = ['name', 'date', 'ukm_id', 'proof_photo'];
+    
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array<int, string>
+     */
+    protected $table = 'activities';
+    protected $fillable = ['ukm_id', 'name', 'date', 'proof_photo'];
 
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function ukm()
     {
-        return $this->belongsTo(Ukm::class);
+        return $this->belongsTo(\App\Models\Ukm::class, 'ukm_id', 'ukm_id');
     }
 
-    public function attendances()
+    public function user()
     {
-        return $this->hasMany(Attendances::class, 'activity_id');
+        return $this->belongsTo(\App\Models\User::class, 'user_id', 'user_id');
     }
 }
