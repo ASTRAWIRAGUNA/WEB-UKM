@@ -29,7 +29,7 @@
         </li>
 
         <li class="sidebar-item">
-            <a href="{{ route('manage-ukm.index') }}" class="sidebar-link">
+            <a href="{{ route('manage-laporan-ukm.index') }}" class="sidebar-link">
                 <i class="fa-regular fa-circle-check"></i>
                 <span>Laporan UKM</span>
             </a>

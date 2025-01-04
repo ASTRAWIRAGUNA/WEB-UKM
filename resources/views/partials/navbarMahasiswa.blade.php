@@ -1,17 +1,20 @@
-<nav class="navbar bg-body-tertiary bg-primary">
-    <div class="container">
-      <a class="navbar-brand" href="#">
-        <img src="{{ asset('assets/images/BEM.png')}}" alt="" srcset="" style="width: 30px; height: 30px;">
-      </a>
-    </div>
-    <div>
+<nav class="navbar navbar-expand-lg bg-primary">
+  <div class="container d-flex justify-content-between align-items-center">
+    <!-- Logo -->
+    <a class="navbar-brand d-flex align-items-center" href="#">
+      <img src="{{ asset('assets/images/BEM.png') }}" alt="Logo BEM" style="width: 30px; height: 30px;" class="me-2">
+      <span class="text-light fw-bold">UKM STIMATA</span>
+    </a>
+
+    <!-- User Info & Logout -->
+    <div class="d-flex align-items-center">
+      <span class="text-light me-3 mb-1">achmadsymsl87@gmail.com</span>
       <form id="logout-form" action="{{ route('auth.logout') }}" method="POST" style="display: none;">
-          @csrf
+        @csrf
       </form>
-      
-      <a href="#" class="sidebar-link" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-          <i class="lni lni-exit"></i>
-          <span>Logout</span>
+      <a href="#" class="text-light" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+        <i class="fa-solid fa-arrow-right-from-bracket fs-5"></i>
       </a>
     </div>
+  </div>
 </nav>

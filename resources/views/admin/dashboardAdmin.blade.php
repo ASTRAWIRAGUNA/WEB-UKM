@@ -3,6 +3,22 @@
 @section('head')
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
     <link rel="stylesheet" href="{{ asset('assets/css/styleAdmin.css') }}">
+    <style>
+        .card-box {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          padding: 20px;
+          color: white;
+          border-radius: 8px;
+        }
+        .card-purple { background-color: #6f42c1; }
+        .card-blue { background-color: #0d6efd; }
+        .card-green { background-color: #198754; }
+        .icon-box {
+          font-size: 24px;
+        }
+      </style>
 @endsection
 
 @section('body')
@@ -10,23 +26,76 @@
     @include('partials.sideBarAdmin')
 
     <div class="main p-3">
-        <div class="text-center">
-            <h1>Dashboard Admin</h1>
-        </div>
-
-        <div class="mb-3">
+        <div class="header d-flex justify-content-between align-items-center mb-2" >
+            <div class="fw-semibold fs-3">Dashboard</div>
+            <div class="user profile d-flex align-items-center">Hi, achmadsymsl87@gmail.com</div>
+          </div>
+        <div class="mb-3 d-flex justify-content-end">
             <!-- Form untuk toggle status semua UKM -->
             <form action="{{ route('dashboard-admin.toggleAllRegistrationStatus') }}" method="POST" id="toggleForm">
                 @csrf
                 <div class="form-check form-switch">
                     <!-- Menambahkan kondisi untuk status checkbox -->
+                    <label class="form-check-label" for="flexSwitchCheckDefault">Pendaftaran UKM</label>
                     <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault" name="status" value="on"
                     @if($isActive) checked @endif>
-                    <label class="form-check-label" for="flexSwitchCheckDefault">Aktifkan Semua Pendaftaran UKM</label>
+                    
                 </div>
             </form>
-                 
         </div>
+        <div class="row">
+                
+            <!-- Card 1 -->
+            <div class="col-md-4 mb-3">
+              <div class="card-box card-purple">
+                <div>
+                  <h3 class="mb-0">9</h3>
+                  <p class="mb-0">Data User</p>
+                </div>
+                <div class="icon-box">
+                  <i class="fa-solid fa-folder"></i>
+                </div>
+              </div>
+            </div>
+            <!-- Card 2 -->
+            <div class="col-md-4 mb-3">
+              <div class="card-box card-blue">
+                <div>
+                  <h3 class="mb-0">5</h3>
+                  <p class="mb-0">Data UKM</p>
+                </div>
+                <div class="icon-box">
+                  <i class="fa-solid fa-folder"></i>
+                </div>
+              </div>
+            </div>
+            <!-- Card 3 -->
+            <div class="col-md-4 mb-3">
+              <div class="card-box card-green">
+                <div>
+                  <h3 class="mb-0">3</h3>
+                  <p class="mb-0">Data Mahasiswa</p>
+                </div>
+                <div class="icon-box">
+                  <i class="fa-solid fa-folder"></i>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <!-- Card 4 -->
+            <div class="col-md-4 mb-3">
+              <div class="card-box card-purple">
+                <div>
+                  <h3 class="mb-0">7</h3>
+                  <p class="mb-0">Activity</p>
+                </div>
+                <div class="icon-box">
+                  <i class="fa-solid fa-folder"></i>
+                </div>
+              </div>
+            </div>
+          </div>
     </div>
 </div>
 
