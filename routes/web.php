@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ActivityController;
 use App\Http\Controllers\AnggotaUkmController;
 use App\Http\Controllers\KegiatanUkmController;
 use App\Http\Controllers\UkmController;
@@ -30,12 +31,13 @@ Route::middleware(['auth', RoleMiddleware::class . ':Admin'])->group(function ()
     Route::resource('/log-activity', LogActivityController::class);
 });
 
+
 // Route untuk BPH_UKM
 Route::middleware(['auth', RoleMiddleware::class . ':BPH_UKM'])->group(function () {
     Route::resource('/dashboard-ukm', DashboardUkmController::class);
     Route::resource('/manage-anggota', AnggotaUkmController::class);
-    Route::resource('/manage-kegiatan-ukm', KegiatanUkmController::class);
     Route::resource('/manage-kas-ukm', KasUkmController::class);
+
 });
 
 // Route untuk Mahasiswa
@@ -43,3 +45,5 @@ Route::middleware(['auth', RoleMiddleware::class . ':Mahasiswa'])->group(functio
     Route::resource('/home', HomeController::class);
     Route::get('/detail', [HomeController::class, 'detail']);
 });
+Route::resource('/activities', App\Http\Controllers\ActivityController::class);
+
