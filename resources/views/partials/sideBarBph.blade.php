@@ -1,7 +1,7 @@
 <aside id="sidebar">
     <div class="d-flex">
         <button class="toggle-btn" type="button">
-            <i class="lni lni-grid-alt"></i>
+            <img src="{{ asset('assets/images/BEM.png')}}" alt="" srcset="" style="width: 30px; height: 30px;">
         </button>
         <div class="sidebar-logo">
             <a href="#">CodzSword</a>
@@ -10,26 +10,26 @@
     <ul class="sidebar-nav">
         <li class="sidebar-item">
             <a href="{{ route('dashboard-ukm.index') }}" class="sidebar-link">
-                <i class="lni lni-user"></i>
+                <i class="fa-solid fa-gauge"></i>
                 <span>Dashboard</span>
             </a>
         </li>
         <li class="sidebar-item">
             <a href="{{ route('manage-anggota.index') }}" class="sidebar-link">
-                <i class="lni lni-agenda"></i>
+                <i class="fa-solid fa-user-group"></i>
                 <span>Manage Anggota</span>
             </a>
         </li>
         <li class="sidebar-item">
             <a href="{{ route('manage-kegiatan-ukm.index') }}" class="sidebar-link">
-                <i class="lni lni-protection"></i>
+                <i class="fa-solid fa-chart-line"></i>
                 <span>Manage Kegiatan</span>
             </a>
             
         </li>
         <li class="sidebar-item">
             <a href="{{ route('manage-kas-ukm.index') }}" class="sidebar-link">
-                <i class="lni lni-layout"></i>
+                <i class="fa-solid fa-money-bill-wave"></i>
                 <span>Manage Kas</span>
             </a>
             
@@ -42,7 +42,7 @@
         </form>
 
         <a href="#" class="sidebar-link" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-            <i class="lni lni-exit"></i>
+            <i class="fa-solid fa-arrow-right-from-bracket"></i>
             <span>Logout</span>
         </a>
     </div>

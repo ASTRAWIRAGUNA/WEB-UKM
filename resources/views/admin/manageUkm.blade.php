@@ -1,21 +1,65 @@
 @extends('base')
 
 @section('head')
-<link href="https://cdn.lineicons.com/4.0/lineicons.css" rel="stylesheet" />
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
 <link rel="stylesheet" href="{{ asset('assets/css/styleAdmin.css') }}">
+<style>
+    .custom-btn {
+      border-radius: 8px;
+      padding: 8px 15px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 12px;
+      font-weight: 700;
+      transition: all 0.3s ease;
+      text-decoration: none;
+    }
+
+    .btn-excel {
+      background-color: #b2fce4;
+      color: #00d084;
+      border: none;
+    }
+
+    .btn-excel:hover {
+      background-color: #99e6ce;
+    }
+
+    .btn-tambah {
+      background-color: #d8dcfc;
+      color: #5a61e6;
+      border: none;
+    }
+
+    .btn-tambah:hover {
+      background-color: #c0c6f5;
+    }
+
+    .custom-icon {
+      font-size: 20px;
+    }
+
+    .d-flex {
+      display: flex;
+    }
+
+    .gap-3 {
+      gap: 12px;
+    }
+  </style>
 @endsection
 
 @section('body')
   <div class="wrapper">
     @include('partials.sideBarAdmin')
     <div class="main p-3">
-      <div class="text-center">
-          <h1>
-              Sidebar Bootstrap 5
-          </h1>
-
+      <div class="header d-flex justify-content-between align-items-center mb-4" >
+        <div class="fw-bold fs-3">Manage UKM</div>
+        <div class="user profile d-flex align-items-center">Hi, achmadsymsl87@gmail.com</div>
+      </div>
+      <div class="text-center bg-light">
           @if ($errors->any())
             <div class="alert alert-danger">
                 <ul>
@@ -25,44 +69,78 @@
                 </ul>
             </div>
           @endif
-
-          <div class="tables px-4 py-3 shadow-sm rounded">
-          <table class="table caption-top table-striped">
-            <div class="d-flex justify-content-between mb-3">
-              <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addUkm">
-                Tambah UKM
+          <div class="tables px-4 py-3 shadow-sm bg-light" style="border-radius: 10px;">
+            <div class="d-flex justify-content-between align-items-center">
+              <div class="fw-medium fs-4">Data</div>
+              <div 
+                class="input-group" 
+                style="max-width: 150px; border: 2px solid #D3CFCF; border-radius: 8px; overflow: hidden;"
+              >
+                <span class="input-group-text bg-white border-0 pl-3">
+                  <i class="fa-solid fa-magnifying-glass text-muted"></i>
+                </span>
+                <input 
+                  type="text" 
+                  class="form-control shadow-none border-0 pr-4 py-2 fw-semibold" 
+                  placeholder="Search"
+                  style="font-size: 12px;"
+                >
+              </div>
+            </div> 
+            <hr>
+            <div class="d-flex justify-content-end gap-3 mb-3">
+              <button type="button" class="custom-btn btn-tambah" data-bs-toggle="modal" data-bs-target="#addUkm">
+                <i class="fa-solid fa-plus"></i>Tambah UKM
               </button>
-              
             </div>
-            <caption>List of UKMs</caption>
-            <thead>
-              <tr>
-                <th scope="col">No</th>
-                <th scope="col">UKM Logo</th>
-                <th scope="col">Nama UKM</th>
-                <th scope="col">Deskripsi UKM</th>
-                <th scope="col">Email UKM</th>
-                <th scope="col">Action</th>
+            
+            <table class="table caption-top table-bordered" style="border-radius: 10px;">
+              <thead>
+              <tr class="bg-gray-200 border">
+                <th>No</th>
+                <th>UKM Logo</th>
+                <th>Nama UKM</th>
+                <th>Deskripsi UKM</th>
+                <th>Email UKM</th>
+                <th>Action</th>
               </tr>
             </thead>
             <tbody>
               @foreach ($ukms as $ukm)
-              <tr>
-                <th scope="row">{{ $loop->iteration }}</th>
-                <td class="w-25 mx-auto"><img src="{{ asset('storage/profile_photo_ukm/'. $ukm->profile_photo_ukm )}}" alt="" style="width: 20%"></td>
-                <td class="mx-auto">{{ $ukm->name_ukm }}</td>
-                <td class="mx-auto">{{ $ukm->description }}</td>
-                <td>{{ $ukm->bph->email ?? 'Tidak ada BPH' }}</td> <!-- Menampilkan email BPH -->
+              <tr class="border">
+                <th class="align-middle">{{ $loop->iteration }}</th>
+                <td class="w-25 align-middle"><img src="{{ asset('storage/profile_photo_ukm/'. $ukm->profile_photo_ukm )}}" alt="" style="width: 20%"></td>
+                <td class="align-middle">{{ $ukm->name_ukm }}</td>
+                <td class="align-middle">{{ $ukm->description }}</td>
+                <td class="align-middle">{{ $ukm->bph->email ?? 'Tidak ada BPH' }}</td> <!-- Menampilkan email BPH -->
 
-
-                <td>
-                  <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#updateUkm-{{ $ukm->ukm_id }}"><i class="ri-pencil-line text-white"></i></button>
-                  <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteUkm-{{ $ukm->ukm_id }}"><i class="ri-delete-bin-6-line text-white"></i></button>
+                <td class="align-middle">
+                  <button type="button" class="btn" data-bs-toggle="modal" data-bs-target="#updateUkm-{{ $ukm->ukm_id }}"><i class="fa-regular fa-pen-to-square text-warning"></i></button>
+                  <button type="button" class="btn" data-bs-toggle="modal" data-bs-target="#deleteUkm-{{ $ukm->ukm_id }}"><i class="fa-regular fa-trash-can text-danger"></i></i></button>
                 </td>
               </tr>
               @endforeach
             </tbody>
           </table>
+          <div class="pagination d-flex justify-content-end align-items-center">
+            <nav aria-label="Page navigation example">
+              <ul class="pagination">
+                <li class="page-item">
+                  <a class="page-link" href="#" aria-label="Previous">
+                    <span aria-hidden="true">&laquo;</span>
+                  </a>
+                </li>
+                <li class="page-item"><a class="page-link" href="#">1</a></li>
+                <li class="page-item"><a class="page-link" href="#">2</a></li>
+                <li class="page-item"><a class="page-link" href="#">3</a></li>
+                <li class="page-item">
+                  <a class="page-link" href="#" aria-label="Next">
+                    <span aria-hidden="true">&raquo;</span>
+                  </a>
+                </li>
+              </ul>
+            </nav>
+          </div>
         </div>
       </div>
     </div>

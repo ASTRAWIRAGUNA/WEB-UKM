@@ -1,7 +1,7 @@
 <nav class="navbar bg-body-tertiary bg-primary">
     <div class="container">
       <a class="navbar-brand" href="#">
-        <img src="/docs/5.3/assets/brand/bootstrap-logo.svg" alt="Bootstrap" width="30" height="24">
+        <img src="{{ asset('assets/images/BEM.png')}}" alt="" srcset="" style="width: 30px; height: 30px;">
       </a>
     </div>
     <div>

@@ -20,6 +20,8 @@ Route::post('/auth/login', [AuthController::class, 'login'])->name('auth.login')
 Route::post('/logout', [AuthController::class, 'logout'])->name('auth.logout')->middleware('auth');
 
 Route::resource('/manage-user', UserController::class);
+// Route::post('/import-users', [UserController::class, 'importExcel'])->name('import.users');
+
 
 Route::middleware(['auth', RoleMiddleware::class . ':Admin'])->group(function () {
     Route::resource('/dashboard-admin', DashboardAdminController::class);

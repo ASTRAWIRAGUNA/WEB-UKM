@@ -7,6 +7,9 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Imports\UsersImport;
+
 
 class UserController extends Controller
 {
@@ -41,7 +44,7 @@ class UserController extends Controller
         $currrent_user = Auth::user()->email;
         $logs = Logs::create([
             'user_id' => Auth::id(),
-            'activity' => "$currrent_user mengupdate user baru $user",
+            'activity' => "$currrent_user mengupdate user baru dengan nim {$user->nim}",
         ]);
 
         $logs->save();
