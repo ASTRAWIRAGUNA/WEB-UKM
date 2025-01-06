@@ -53,8 +53,9 @@ class User extends Authenticatable
     // Relasi ke UKM (sebagai anggota)
     public function ukm()
     {
-        return $this->belongsTo(Ukm::class, 'ukm_id', 'ukm_id'); // user belongs to a single ukm
+        return $this->belongsToMany(Ukm::class, 'ukm_user', 'user_id', 'ukm_id')->withTimestamps();
     }
+
 
     // Relasi ke laporan yang dikirim oleh BPH UKM
     public function reports()

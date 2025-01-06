@@ -9,9 +9,7 @@
 @section('body')
 <div class="wrapper">
     @include('partials.navbarMahasiswa')
-
     <div class="main p-3">
-
         <div class="container mt-4">
             <div class="row justify-content-center gap-3">
                 @foreach ($ukms as $ukm)
@@ -21,15 +19,27 @@
                             class="rounded-circle mx-auto mb-2" style="width: 30%"></td>
                         <h5 class="">{{ $ukm->name_ukm }}</h5>
                         @if ($ukm->registration_status == 'active')
-                        <button class="btn btn-primary ml-4">Daftar</button>
+                            @if (in_array($ukm->ukm_id, $ukmFollowed))
+                                <button class="btn btn-secondary ml-4" disabled>Sudah Terdaftar</button>
+                            @else
+                                <form action="{{ route('ukm.join') }}" method="POST">
+                                    @csrf
+                                    <input type="hidden" name="ukm" value="{{ $ukm->ukm_id }}">
+                                    <button type="submit" class="btn btn-primary ml-4">Daftar</button>
+                                </form>
+                            @endif
                         @else
-                        <a href="#" class="btn btn-primary ml-4" hidden>Detail</a>
+                            @if (in_array($ukm->ukm_id, $ukmFollowed))
+                                <a href="#" class="btn btn-primary ml-4">Detail</a>
+                            @else
+                                <button class="btn btn-secondary ml-4" disabled>Pendaftaran Ditutup</button>
+                            @endif
                         @endif
                     </div>
                 </div>
                 @endforeach
             </div>
-        </div>
+        </div>        
     </div>
 </div>
 @endsection

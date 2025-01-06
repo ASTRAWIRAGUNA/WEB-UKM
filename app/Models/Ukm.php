@@ -14,8 +14,9 @@ class Ukm extends Model
     // Relasi ke anggota (mahasiswa)a
     public function members()
     {
-        return $this->belongsToMany(User::class, 'ukm_user')->withTimestamps();
+        return $this->belongsToMany(User::class, 'ukm_user', 'ukm_id', 'user_id')->withTimestamps();
     }
+
 
     // Relasi ke BPH UKM
     public function bph()

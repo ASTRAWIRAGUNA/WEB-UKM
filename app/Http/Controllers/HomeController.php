@@ -8,13 +8,16 @@ use Illuminate\Support\Facades\Auth;
 
 class HomeController extends Controller
 {
-    public function index(Request $request)
+    public function index()
     {
-        $ukms = Ukm::where('registration_status', 'active')->get();
+        $user = Auth::user(); // Mendapatkan pengguna yang sedang login
+        $ukms = Ukm::all();
 
-        // Mengirimkan data ke view
-        return view('mahasiswa.home', compact('ukms'));
+        $ukmFollowed = $user->ukm->pluck('ukm_id')->toArray(); // UKM yang diikuti oleh pengguna
+
+        return view('mahasiswa.home', compact('ukms', 'ukmFollowed'));
     }
+
 
     public function detail()
     {
