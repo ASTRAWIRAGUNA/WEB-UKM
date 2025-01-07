@@ -57,6 +57,7 @@ class User extends Authenticatable
     }
 
 
+
     // Relasi ke laporan yang dikirim oleh BPH UKM
     public function reports()
     {

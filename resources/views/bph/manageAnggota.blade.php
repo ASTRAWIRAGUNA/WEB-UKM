@@ -89,11 +89,11 @@
             </div> 
             <hr>
             <div class="d-flex justify-content-end gap-3 mb-3">
-              <button type="button" class="custom-btn btn-excel" data-bs-toggle="modal" data-bs-target="#importUser">
+              <button type="button" class="custom-btn btn-excel" data-bs-toggle="modal" data-bs-target="#importMember">
                 <i class="fa-solid fa-file-export"></i>Export Anggota
               </button>
-              <button type="button" class="custom-btn btn-tambah" data-bs-toggle="modal" data-bs-target="#addUser">
-                <i class="fa-solid fa-plus"></i>Tambah Kegiatan
+              <button type="button" class="custom-btn btn-tambah" data-bs-toggle="modal" data-bs-target="#addMember">
+                <i class="fa-solid fa-plus"></i>Tambah Anggota
               </button>
             </div>
 
@@ -109,19 +109,19 @@
               </tr>
             </thead>
             <tbody>
-              {{-- @foreach ($users as $user)
+              @foreach ($members as $member)
               <tr class="border">
                 <th class="align-middle">{{ $loop->iteration }}</th>
-                <td class="align-middle">{{ $user->nim }}</td>
-                <td class="align-middle">{{ $user->email }}</td>
-                <td class="align-middle">{{ $user->text_password }}</td>
-                <td class="align-middle">{{ $user->role }}</td>
+                <td class="align-middle">{{ $member->email }}</td>
+                <td class="align-middle">{{ $member->nim }}</td>
+                <td class="align-middle">nue</td>
+                <td class="align-middle">nue</td>
                 <td class="align-middle">
-                  <button type="button" class="btn" data-bs-toggle="modal" data-bs-target="#updateUser-{{ $user->user_id }}"><i class="fa-regular fa-pen-to-square text-warning"></i></button>
-                  <button type="button" class="btn" data-bs-toggle="modal" data-bs-target="#deleteUser-{{ $user->user_id }}"><i class="fa-regular fa-trash-can text-danger"></i></i></button>
+                  <button type="button" class="btn" data-bs-toggle="modal" data-bs-target="#updateMember-{{ $member->user_id }}"><i class="fa-regular fa-pen-to-square text-warning"></i></button>
+                  <button type="button" class="btn" data-bs-toggle="modal" data-bs-target="#deleteMember-{{ $member->user_id }}"><i class="fa-regular fa-trash-can text-danger"></i></i></button>
                 </td>
               </tr>
-              @endforeach --}}
+              @endforeach
             </tbody>
           </table>
           <div class="pagination d-flex justify-content-end align-items-center">
@@ -148,34 +148,22 @@
     </div>
   </div>
 
-  <div class="modal fade" id="addUser" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal fade" id="addMember" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content">
         <div class="modal-header">
-          <h1 class="modal-title fs-5" id="exampleModalLabel">Tambah User</h1>
+          <h1 class="modal-title fs-5" id="exampleModalLabel">Tambah Anggota</h1>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
-          <form action="{{ route('manage-user.store') }}" method="POST">
+          <form action="{{ route('manage-anggota.store') }}" method="POST">
             @csrf
-            <div class="mb-3">
-              <label for="exampleInputEmail1" class="form-label">NIM</label>
-              <input type="text" class="form-control shadow-none" id="nim" name="nim" aria-describedby="emailHelp">
-            </div>
-            <div class="mb-3">
-              <label for="exampleInputEmail1" class="form-label">Email</label>
-              <input type="email" class="form-control shadow-none" name="email" id="exampleInputEmail1" aria-describedby="emailHelp">
-            </div>
-            <div class="mb-3">
-              <label for="exampleInputPassword1" class="form-label">Password</label>
-              <input type="password" class="form-control shadow-none" name="password" id="exampleInputPassword1">
-            </div>
             <div class="col-md-3 w-100">
-              <label for="validationCustom04" class="form-label">Role</label>
-              <select class="form-select" id="validationCustom04" name="role" required>
-                <option value="Admin">Admin</option>
-                <option value="BPH_UKM">BPH UKM</option>
-                <option value="Mahasiswa">Mahasiswa</option>
+              <label for="validationCustom04" class="form-label">Email User</label>
+              <select class="form-select" id="validationCustom04" name="email" required>
+                @foreach ($users as $user)
+                <option value="{{ $user->email }}">{{ $user->email }}</option>    
+                @endforeach
               </select>
 
             </div>
@@ -190,36 +178,24 @@
     </div>
   </div>
   {{-- update user --}}
-  {{-- @foreach ($users as $user)
-  <div class="modal fade" id="updateUser-{{ $user->user_id }}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  @foreach ($members as $member)
+  <div class="modal fade" id="updateMember-{{ $member ->user_id }}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content">
         <div class="modal-header">
-          <h1 class="modal-title fs-5" id="exampleModalLabel">Ubah User</h1>
+          <h1 class="modal-title fs-5" id="exampleModalLabel">Ubah Anggota</h1>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
-          <form action="{{ route('manage-user.update', $user->user_id) }}" method="POST">
+          <form action="{{ route('manage-anggota.update', $member->user_id) }}" method="POST">
             @csrf
             @method('PUT') <!-- Method untuk update -->
             <div class="mb-3">
-              <label for="nim-{{ $user->user_id }}" class="form-label">NIM</label>
-              <input type="text" class="form-control shadow-none" id="nim-{{ $user->user_id }}" name="nim" value="{{ $user->nim }}" required>
-            </div>
-            <div class="mb-3">
-              <label for="email-{{ $user->user_id }}" class="form-label">Email</label>
-              <input type="email" class="form-control shadow-none" id="email-{{ $user->user_id }}" name="email" value="{{ $user->email }}" required>
-            </div>
-            <div class="mb-3">
-              <label for="password-{{ $user->user_id }}" class="form-label">Password (Isi jika ingin mengganti)</label>
-              <input type="text" class="form-control shadow-none" id="password-{{ $user->user_id }}" name="text_password" value="{{ $user->text_password }}">
-            </div>
-            <div class="mb-3">
-              <label for="role-{{ $user->user_id }}" class="form-label">Role</label>
-              <select class="form-select" id="role-{{ $user->user_id }}" name="role" required>
-                <option value="Admin" {{ $user->role == 'Admin' ? 'selected' : '' }}>Admin</option>
-                <option value="BPH_UKM" {{ $user->role == 'BPH_UKM' ? 'selected' : '' }}>BPH UKM</option>
-                <option value="Mahasiswa" {{ $user->role == 'Mahasiswa' ? 'selected' : '' }}>Mahasiswa</option>
+              <label for="member-{{ $member->user_id }}" class="form-label">Ubah Anggota</label>
+              <select class="form-select" id="member-{{ $member->user_id }}" name="email" required>
+                @foreach ($users as $user)
+                  <option value="{{ $user->email }}">{{ $user->email }}</option>
+                @endforeach
               </select>
             </div>
             <div class="modal-footer">
@@ -231,11 +207,11 @@
       </div>
     </div>
   </div>
-  @endforeach --}}
+  @endforeach
 
   {{-- delete user --}}
-  {{-- @foreach ($users as $user)
-  <div class="modal fade" id="deleteUser-{{ $user->user_id }}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  @foreach ($members as $member)
+  <div class="modal fade" id="deleteMember-{{ $member->user_id }}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content">
         <div class="modal-header">
@@ -243,10 +219,10 @@
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
-          <form action="{{ route('manage-user.destroy', $user->user_id) }}" method="POST">
+          <form action="{{ route('manage-anggota.destroy', $member->user_id) }}" method="POST">
             @csrf
             @method('DELETE')
-            Apakah kamu yakin ingin mendelete user {{$user->email}}
+            Apakah kamu yakin ingin mengeluarkan user ini {{$member->email}}
             <div class="modal-footer">
               <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
               <button type="submit" class="btn btn-danger">Hapus User</button>
@@ -257,7 +233,7 @@
       </div>
     </div>
   </div>
-  @endforeach --}}
+  @endforeach
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"
   integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe"
   crossorigin="anonymous"></script>
