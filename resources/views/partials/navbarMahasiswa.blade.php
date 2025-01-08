@@ -3,7 +3,7 @@
     <!-- Logo -->
     <a class="navbar-brand d-flex align-items-center" href="#">
       <img src="{{ asset('assets/images/BEM.png') }}" alt="Logo BEM" style="width: 30px; height: 30px;" class="me-2">
-      <span class="text-light fw-bold">UKM STIMATA</span>
+      <span class="text-light fw-bold">BEM STIMATA</span>
     </a>
 
     <!-- User Info & Logout -->

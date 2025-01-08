@@ -13,31 +13,34 @@
         <div class="container mt-4">
             <div class="row justify-content-center gap-3">
                 @foreach ($ukms as $ukm)
-                <div class="col-auto bg-light rounded-md" style="width: 25rem;">
-                    <div class="d-flex align-items-center justify-content-between p-3 text-center">
-                        <img src="{{ asset('storage/profile_photo_ukm/'. $ukm->profile_photo_ukm )}}" alt=""
-                            class="rounded-circle mx-auto mb-2" style="width: 30%"></td>
-                        <h5 class="">{{ $ukm->name_ukm }}</h5>
-                        @if ($ukm->registration_status == 'active')
-                            @if (in_array($ukm->ukm_id, $ukmFollowed))
-                                <button class="btn btn-secondary ml-4" disabled>Sudah Terdaftar</button>
-                            @else
-                                <form action="{{ route('ukm.join') }}" method="POST">
-                                    @csrf
-                                    <input type="hidden" name="ukm" value="{{ $ukm->ukm_id }}">
-                                    <button type="submit" class="btn btn-primary ml-4">Daftar</button>
-                                </form>
-                            @endif
-                        @else
-                            @if (in_array($ukm->ukm_id, $ukmFollowed))
-                                <a href="#" class="btn btn-primary ml-4">Detail</a>
-                            @else
-                                <button class="btn btn-secondary ml-4" disabled>Pendaftaran Ditutup</button>
-                            @endif
-                        @endif
-                    </div>
-                </div>
-                @endforeach
+    @if ($ukm->registration_status == 'active' || in_array($ukm->ukm_id, $ukmFollowed))
+        <div class="col-auto bg-light rounded-md" style="width: 25rem;">
+            <div class="d-flex align-items-center justify-content-between p-3 ">
+                <img src="{{ asset('storage/profile_photo_ukm/'. $ukm->profile_photo_ukm )}}" alt=""
+                    class="rounded-circle mx-auto mb-2" style="width: 20%">
+                <h5 class="">{{ $ukm->name_ukm }}</h5>
+                @if ($ukm->registration_status == 'active')
+                    @if (in_array($ukm->ukm_id, $ukmFollowed))
+                        <button class="btn btn-secondary ml-4" disabled>Sudah Terdaftar</button>
+                    @else
+                        <form action="{{ route('ukm.join') }}" method="POST">
+                            @csrf
+                            <input type="hidden" name="ukm" value="{{ $ukm->ukm_id }}">
+                            <button type="submit" class="btn btn-primary ml-4">Daftar</button>
+                        </form>
+                    @endif
+                @else
+                    @if (in_array($ukm->ukm_id, $ukmFollowed))
+                        <a href="#" class="btn btn-primary ml-4">Detail</a>
+                    @else
+                        <button class="btn btn-secondary ml-4" disabled>Pendaftaran Ditutup</button>
+                    @endif
+                @endif
+            </div>
+        </div>
+    @endif
+@endforeach
+
             </div>
         </div>        
     </div>
