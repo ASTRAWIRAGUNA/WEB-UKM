@@ -16,12 +16,13 @@ class DashboardAdminController extends Controller
         $c_users = User::count();
         $c_ukms = Ukm::count();
         $c_activities = Activity::count();
+        $c_mhs = User::where('role', 'Mahasiswa')->count();
 
         // Periksa apakah semua UKM memiliki status registration_status 'active'
         $isActive = !$ukms->contains(fn($ukm) => $ukm->registration_status == 'deactivated');
 
 
-        return view('admin.dashboardAdmin', compact('ukms', 'isActive', 'c_users', 'c_ukms', 'c_activities'));
+        return view('admin.dashboardAdmin', compact('ukms', 'isActive', 'c_users', 'c_ukms', 'c_activities', 'c_mhs'));
     }
 
 

@@ -84,7 +84,7 @@
       <div class="col-md-4 mb-3">
         <div class="card-box card-green">
           <div>
-            <h3 class="mb-0">3</h3>
+            <h3 class="mb-0">{{ $c_mhs }}</h3>
             <p class="mb-0">Total Mahasiswa</p>
           </div>
           <div class="icon-box">

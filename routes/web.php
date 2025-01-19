@@ -29,7 +29,7 @@ Route::middleware(['auth', RoleMiddleware::class . ':Admin'])->group(function ()
     Route::post('/dashboard-admin/toggle-all-registration-status', [DashboardAdminController::class, 'toggleAllRegistrationStatus'])->name('dashboard-admin.toggleAllRegistrationStatus');
     // Route::resource('/manage-user', UserController::class);
     // Route::post('/import-user', [UserController::class, 'importUser'])->name('import-user');
-    Route::resource('/manage-ukm', UkmController::class);
+
     Route::resource('/manage-laporan-ukm', LaporanUkmController::class);
     Route::resource('/log-activity', LogActivityController::class);
 });
@@ -50,4 +50,3 @@ Route::middleware(['auth', RoleMiddleware::class . ':Mahasiswa'])->group(functio
     Route::get('/detail', [HomeController::class, 'detail']);
 });
 Route::resource('/manage-kegiatan', ActivityController::class);
-Route::resource('/dashboard-admin', DashboardAdminController::class);
