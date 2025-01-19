@@ -35,6 +35,17 @@ class UkmController extends Controller
         $imageName = $profile_photo_ukm->hashName();
         $profile_photo_ukm->storeAs('public/profile_photo_ukm', $imageName);
 
+        $ukm_exists = Ukm::where('name_ukm', $request->name_ukm)->exists();
+        $email_exists = User::where('email', $request->email)->exists();
+
+        if ($ukm_exists) {
+            return redirect()->route('manage-ukm.index')->with('error', 'UKM telah dibuat sebelumnya');
+        }
+
+        if ($email_exists) {
+            return redirect()->route('manage-ukm.index')->with('error', 'Email yang ada masukkan sudah terdaftar');
+        }
+
         Ukm::create([
             'profile_photo_ukm' => $imageName,
             'name_ukm' => $request->name_ukm,
