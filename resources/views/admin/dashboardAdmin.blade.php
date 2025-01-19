@@ -60,7 +60,7 @@
       <div class="col-md-4 mb-3">
         <div class="card-box card-purple">
           <div>
-            <h3 class="mb-0">9</h3>
+            <h3 class="mb-0">{{$c_users}}</h3>
             <p class="mb-0">Total User</p>
           </div>
           <div class="icon-box">
@@ -72,7 +72,7 @@
       <div class="col-md-4 mb-3">
         <div class="card-box card-blue">
           <div>
-            <h3 class="mb-0">5</h3>
+            <h3 class="mb-0">{{ $c_ukms }}</h3>
             <p class="mb-0">Total UKM</p>
           </div>
           <div class="icon-box">
@@ -98,7 +98,7 @@
       <div class="col-md-4 mb-3">
         <div class="card-box card-purple">
           <div>
-            <h3 class="mb-0">7</h3>
+            <h3 class="mb-0">{{ $c_activities }}</h3>
             <p class="mb-0">Total Activity</p>
           </div>
           <div class="icon-box">

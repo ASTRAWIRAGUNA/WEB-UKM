@@ -50,3 +50,4 @@ Route::middleware(['auth', RoleMiddleware::class . ':Mahasiswa'])->group(functio
     Route::get('/detail', [HomeController::class, 'detail']);
 });
 Route::resource('/manage-kegiatan', ActivityController::class);
+Route::resource('/dashboard-admin', DashboardAdminController::class);
