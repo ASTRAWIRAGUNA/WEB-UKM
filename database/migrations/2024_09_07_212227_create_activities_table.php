@@ -12,11 +12,13 @@ return new class extends Migration
     public function up()
     {
         Schema::create('activities', function (Blueprint $table) {
-            $table->id();
+            $table->id('activities_id');
             $table->foreignId('ukm_id')->constrained('ukms', 'ukm_id')->onDelete('cascade');
-            $table->string('name');
+            $table->string('name_activity');
             $table->date('date');
             $table->string('proof_photo')->nullable(); // Bukti foto kegiatan
+            $table->string('status_activity');
+            $table->string('message')->nullable();
             $table->timestamps();
         });
     }

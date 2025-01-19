@@ -12,7 +12,7 @@ return new class extends Migration
     public function up()
     {
         Schema::create('attendances', function (Blueprint $table) {
-            $table->id();
+            $table->id('attendances_id');
             $table->unsignedBigInteger('activity_id');
             $table->unsignedBigInteger('user_id');
             $table->boolean('is_present')->default(false);
