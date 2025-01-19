@@ -80,7 +80,7 @@
         <div class="card-box card-purple">
           <div>
             <h3 class="mb-0">9</h3>
-            <p class="mb-0">Data User</p>
+            <p class="mb-0">Total Anggota</p>
           </div>
           <div class="icon-box">
             <i class="fa-solid fa-folder"></i>
@@ -92,7 +92,7 @@
         <div class="card-box card-blue">
           <div>
             <h3 class="mb-0">5</h3>
-            <p class="mb-0">Data UKM</p>
+            <p class="mb-0">Total Aktivitas</p>
           </div>
           <div class="icon-box">
             <i class="fa-solid fa-folder"></i>
@@ -104,21 +104,7 @@
         <div class="card-box card-green">
           <div>
             <h3 class="mb-0">3</h3>
-            <p class="mb-0">Data Mahasiswa</p>
-          </div>
-          <div class="icon-box">
-            <i class="fa-solid fa-folder"></i>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="row">
-      <!-- Card 4 -->
-      <div class="col-md-4 mb-3">
-        <div class="card-box card-purple">
-          <div>
-            <h3 class="mb-0">7</h3>
-            <p class="mb-0">Activity</p>
+            <p class="mb-0">Total Kas</p>
           </div>
           <div class="icon-box">
             <i class="fa-solid fa-folder"></i>
@@ -149,36 +135,34 @@
       enctype="multipart/form-data"> --}}
       <form id="ukmForm" class="d-none mt-4" method="POST" action="{{ route('dashboard-ukm.update', $ukm->ukm_id) }}"
         enctype="multipart/form-data">
-      @csrf
-      @method('PUT')
-      <div class="d-flex align-items-start">
-        <!-- Bagian Gambar -->
-        <div class="align-items-start">
-          <img src="{{ asset('storage/profile_photo_ukm/' . $ukm->profile_photo_ukm) }}" 
-              alt="Profile Photo" 
-              class="bg-light rounded" 
-              style="width: 200px; height: 200px;">
-          <input type="file" name="profile_photo_ukm" class="form-control mt-2" style="width: 200px;">
+        @csrf
+        @method('PUT')
+        <div class="d-flex align-items-start">
+          <!-- Bagian Gambar -->
+          <div class="align-items-start">
+            <img src="{{ asset('storage/profile_photo_ukm/' . $ukm->profile_photo_ukm) }}" alt="Profile Photo"
+              class="bg-light rounded" style="width: 200px; height: 200px;">
+            <input type="file" name="profile_photo_ukm" class="form-control mt-2" style="width: 200px;">
+          </div>
+          <!-- Bagian Input -->
+          <div class="flex-grow-1 ms-3 d-flex flex-column">
+            <div class="mb-1">
+              <label class="form-label">Nama UKM</label>
+              <input type="text" name="name_ukm" class="form-control" value="{{ $ukm->name_ukm }}" required>
+            </div>
+            <div class="mb-1">
+              <label class="form-label">Deskripsi</label>
+              <textarea name="description" rows="4" class="form-control" required>{{ $ukm->description }}</textarea>
+            </div>
+            <!-- Bagian Tombol -->
+            <div class="mt-auto d-flex justify-content-end">
+              <button type="submit" class="btn btn-primary me-2">Save</button>
+              <button type="button" onclick="toggleEditForm('ukm')" class="btn btn-secondary">Cancel</button>
+            </div>
+          </div>
         </div>
-        <!-- Bagian Input -->
-        <div class="flex-grow-1 ms-3 d-flex flex-column">
-          <div class="mb-1">
-            <label class="form-label">Nama UKM</label>
-            <input type="text" name="name_ukm" class="form-control" value="{{ $ukm->name_ukm }}" required>
-          </div>
-          <div class="mb-1">
-            <label class="form-label">Deskripsi</label>
-            <textarea name="description" rows="4" class="form-control" required>{{ $ukm->description }}</textarea>
-          </div>
-          <!-- Bagian Tombol -->
-          <div class="mt-auto d-flex justify-content-end">
-            <button type="submit" class="btn btn-primary me-2">Save</button>
-            <button type="button" onclick="toggleEditForm('ukm')" class="btn btn-secondary">Cancel</button>
-          </div>
-        </div>
-      </div>
-    </form>
-  
+      </form>
+
   </div>
 </div>
 <script>

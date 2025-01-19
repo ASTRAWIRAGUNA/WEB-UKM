@@ -13,7 +13,7 @@
         @csrf
       </form>
       <a href="#" class="text-light" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-        <i class="fa-solid fa-arrow-right-from-bracket fs-5"></i>
+        <i class="fa-solid fa-arrow-right-from-bracket fs-6"></i>
       </a>
     </div>
   </div>
