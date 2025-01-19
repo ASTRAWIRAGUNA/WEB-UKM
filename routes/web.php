@@ -20,14 +20,15 @@ Route::get('/', [AuthController::class, 'showLoginForm'])->name('login')->middle
 Route::post('/auth/login', [AuthController::class, 'login'])->name('auth.login');
 Route::post('/logout', [AuthController::class, 'logout'])->name('auth.logout')->middleware('auth');
 
+// sementara
 Route::resource('/manage-user', UserController::class);
-// Route::post('/import-users', [UserController::class, 'importExcel'])->name('import.users');
-
+Route::post('/import-user', [UserController::class, 'importUser'])->name('import-user');
 
 Route::middleware(['auth', RoleMiddleware::class . ':Admin'])->group(function () {
     Route::resource('/dashboard-admin', DashboardAdminController::class);
     Route::post('/dashboard-admin/toggle-all-registration-status', [DashboardAdminController::class, 'toggleAllRegistrationStatus'])->name('dashboard-admin.toggleAllRegistrationStatus');
     // Route::resource('/manage-user', UserController::class);
+    // Route::post('/import-user', [UserController::class, 'importUser'])->name('import-user');
     Route::resource('/manage-ukm', UkmController::class);
     Route::resource('/manage-laporan-ukm', LaporanUkmController::class);
     Route::resource('/log-activity', LogActivityController::class);
