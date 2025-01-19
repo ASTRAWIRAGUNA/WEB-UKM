@@ -7,7 +7,9 @@ use Illuminate\Database\Eloquent\Model;
 
 class Attendances extends Model
 {
-    protected $fillable = ['activity_id', 'user_id', 'is_present'];
+
+    protected $primaryKey = 'attendance_id';
+    protected $fillable = ['activity_id', 'user_id', 'is_present', 'status_active'];
 
     public function activity()
     {

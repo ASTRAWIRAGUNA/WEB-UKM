@@ -21,14 +21,16 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Activity extends Model
 {
-    
+
     /**
      * The attributes that are mass assignable.
      *
      * @var array<int, string>
      */
     protected $table = 'activities';
-    protected $fillable = ['ukm_id', 'name', 'date', 'proof_photo'];
+
+    protected $primaryKey = 'activities_id';
+    protected $fillable = ['ukm_id', 'name_activity', 'date', 'proof_photo', 'status_activity', 'message'];
 
 
     /**
@@ -36,11 +38,11 @@ class Activity extends Model
      */
     public function ukm()
     {
-        return $this->belongsTo(\App\Models\Ukm::class, 'ukm_id', 'ukm_id');
+        return $this->belongsTo(Ukm::class, 'ukm_id', 'ukm_id');
     }
 
     public function user()
     {
-        return $this->belongsTo(\App\Models\User::class, 'user_id', 'user_id');
+        return $this->belongsTo(User::class, 'user_id', 'user_id');
     }
 }

@@ -9,7 +9,7 @@ class Ukm extends Model
 {
 
     protected $primaryKey = 'ukm_id';
-    protected $fillable = ['name_ukm', 'description', 'profile_photo_ukm', 'bph_id', 'registration_status'];
+    protected $fillable = ['name_ukm', 'description', 'profile_photo_ukm', 'bph_id', 'registration_status', 'min_activity'];
 
     // Relasi ke anggota (mahasiswa)a
     public function members()
@@ -28,14 +28,12 @@ class Ukm extends Model
     // Relasi ke kegiatan
     public function activities()
     {
-        return $this->hasMany(Activity::class);
+        return $this->hasMany(Activity::class, 'ukm_id', 'ukm_id'); // 'ukm_id' adalah foreign key di tabel activities
     }
 
-    // Relasi ke laporan (Report)
-    public function reports()
-    {
-        return $this->hasMany(Reports::class);
-    }
+
+
+
 
     // Relasi ke kas UKM
     public function kas()
