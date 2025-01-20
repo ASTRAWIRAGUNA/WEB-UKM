@@ -23,6 +23,7 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('auth.logout')->
 // sementara
 Route::resource('/manage-user', UserController::class);
 Route::post('/import-user', [UserController::class, 'importUser'])->name('import-user');
+Route::resource('/manage-ukm', UkmController::class);
 
 Route::middleware(['auth', RoleMiddleware::class . ':Admin'])->group(function () {
     Route::resource('/dashboard-admin', DashboardAdminController::class);
@@ -38,7 +39,7 @@ Route::middleware(['auth', RoleMiddleware::class . ':Admin'])->group(function ()
 // Route untuk BPH_UKM
 Route::middleware(['auth', RoleMiddleware::class . ':BPH_UKM'])->group(function () {
     Route::resource('/dashboard-ukm', DashboardUkmController::class);
-    Route::resource('/manage-anggota', AnggotaUkmController::class);
+    Route::resource('/manage-anggota', controller: AnggotaUkmController::class);
     Route::resource('/manage-kegiatan-ukm', KegiatanUkmController::class);
     Route::resource('/manage-kas-ukm', KasUkmController::class);
 });

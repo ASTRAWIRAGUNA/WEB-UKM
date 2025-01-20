@@ -39,7 +39,7 @@
   <div class="main p-3">
     <div class="header d-flex justify-content-between align-items-center mb-2">
       <div class="fw-semibold fs-3">Dashboard</div>
-      <div class="user profile d-flex align-items-center">Hi, achmadsymsl87@gmail.com</div>
+      <div class="user profile d-flex align-items-center">Hi, {{ auth()->user()->email }}</div>
     </div>
     <div class="mb-3 d-flex justify-content-end">
       <!-- Form untuk toggle status semua UKM -->
