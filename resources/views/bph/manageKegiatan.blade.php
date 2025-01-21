@@ -95,7 +95,7 @@
               <th>No</th>
               <th>Aktifitas</th>
               <th>date</th>
-              <th>Foto Aktifitas</th>
+              <th style="width: 20%">Foto Aktifitas</th>
               <th>Pesan</th>
               <th>Status</th>
               <th>Action</th>
@@ -109,7 +109,7 @@
           <td class="align-middle">{{ $kegiatan->date }}</td>
 
           <td class="align-middle"><img src="{{ asset('storage/proof_photo/' . $kegiatan->proof_photo) }}" alt=""
-            srcset="" style="width: 20%"></td>
+            srcset="" style="width: 60%" class="ratio ratio-16x9"></td>
           <td class="align-middle">{{ $kegiatan->message }}</td>
           <td class="align-middle">
           @if ($kegiatan->status_activity == 'Pending')
@@ -121,6 +121,9 @@
     @endif
           </td>
           <td class="align-middle">
+          <button type="button" class="btn" data-bs-toggle="modal"
+            data-bs-target="#qrcodeKegiatan-{{ $kegiatan->activities_id }}"><i
+            class="fa-solid fa-qrcode text-success"></i></button>
           <button type="button" class="btn" data-bs-toggle="modal"
             data-bs-target="#updateKegiatan-{{ $kegiatan->activities_id }}"><i
             class="fa-regular fa-pen-to-square text-warning"></i></button>
@@ -254,6 +257,30 @@
     </div>
   </div>
 @endforeach
+
+@foreach ($kegiatans as $kegiatan)
+  <div class="modal fade" id="qrcodeKegiatan-{{ $kegiatan->activities_id }}" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+      <h1 class="modal-title fs-5">Qr Code Absen</h1>
+      <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+      <div class="qr-code">
+        @if($kegiatan->qr_code)
+
+      <img src="{{ asset('storage/' . $kegiatan->qr_code) }}" alt="QR Code" class="img-fluid" style="width: 100%">
+    @else
+    <p>No QR code available</p>
+  @endif
+      </div>
+      </div>
+    </div>
+    </div>
+  </div>
+@endforeach
+
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"
   integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe" crossorigin="anonymous"></script>

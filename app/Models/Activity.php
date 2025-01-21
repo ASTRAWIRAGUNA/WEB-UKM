@@ -30,7 +30,7 @@ class Activity extends Model
     protected $table = 'activities';
 
     protected $primaryKey = 'activities_id';
-    protected $fillable = ['ukm_id', 'name_activity', 'date', 'proof_photo', 'status_activity', 'message'];
+    protected $fillable = ['ukm_id', 'name_activity', 'date', 'proof_photo', 'status_activity', 'message', 'qr_code'];
 
 
     /**
@@ -44,5 +44,16 @@ class Activity extends Model
     public function user()
     {
         return $this->belongsTo(User::class, 'user_id', 'user_id');
+    }
+
+    // Pastikan relasi dengan Attendances menggunakan 'activities_id'
+    public function attendances()
+    {
+        return $this->hasMany(Attendances::class, 'activities_id', 'activities_id');
+    }
+
+    public function kas()
+    {
+        return $this->hasMany(Kas::class, 'ukm_id', 'ukm_id');
     }
 }

@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Kas extends Model
 {
     protected $primaryKey = 'kas_id';
-    protected $fillable = ['ukm_id', 'user_id', 'amount'];
+    protected $fillable = ['ukm_id', 'user_id', 'amount', 'cash'];
 
     public function ukm()
     {

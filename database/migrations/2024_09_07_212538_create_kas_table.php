@@ -13,13 +13,17 @@ return new class extends Migration
     {
         Schema::create('kas', function (Blueprint $table) {
             $table->id('kas_id');
-            $table->unsignedBigInteger('ukm_id');
-            $table->unsignedBigInteger('user_id');
-            $table->decimal('amount', 10, 2);
-            $table->timestamps();
+            $table->foreignId('ukm_id')
+                ->constrained('ukms', 'ukm_id')
+                ->onDelete('cascade');
 
-            $table->foreign('ukm_id')->references('ukm_id')->on('ukms')->onDelete('cascade');
-            $table->foreign('user_id')->references('user_id')->on('users')->onDelete('cascade');
+            $table->foreignId('user_id')
+                ->constrained('users', 'user_id')
+                ->onDelete('set null');
+
+            $table->integer('amount')->default(0);
+            $table->integer('cash')->default(0);
+            $table->timestamps();
         });
     }
 

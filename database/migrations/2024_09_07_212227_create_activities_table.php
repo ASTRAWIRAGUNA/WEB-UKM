@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('proof_photo')->nullable(); // Bukti foto kegiatan
             $table->string('status_activity');
             $table->string('message')->nullable();
+            $table->string('qr_code')->nullable();
             $table->timestamps();
         });
     }

@@ -50,4 +50,3 @@ Route::middleware(['auth', RoleMiddleware::class . ':Mahasiswa'])->group(functio
     Route::post('/ukm/join', [AnggotaUkmController::class, 'joinUkm'])->name('ukm.join');
     Route::get('/detail', [HomeController::class, 'detail']);
 });
-Route::resource('/manage-kegiatan', ActivityController::class);
