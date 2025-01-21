@@ -79,7 +79,7 @@
       <div class="col-md-4 mb-3">
         <div class="card-box card-purple">
           <div>
-            <h3 class="mb-0">9</h3>
+            <h3 class="mb-0">{{ $c_anggota }}</h3>
             <p class="mb-0">Total Anggota</p>
           </div>
           <div class="icon-box">
@@ -91,7 +91,7 @@
       <div class="col-md-4 mb-3">
         <div class="card-box card-blue">
           <div>
-            <h3 class="mb-0">5</h3>
+            <h3 class="mb-0">{{ $c_aktivitas }}</h3>
             <p class="mb-0">Total Aktivitas</p>
           </div>
           <div class="icon-box">
@@ -103,7 +103,7 @@
       <div class="col-md-4 mb-3">
         <div class="card-box card-green">
           <div>
-            <h3 class="mb-0">3</h3>
+            <h3 class="mb-0">Rp. 3.000.000</h3>
             <p class="mb-0">Total Kas</p>
           </div>
           <div class="icon-box">

@@ -14,7 +14,18 @@ class DashboardUkmController extends Controller
     {
         $user = Auth::user();
         $ukm = $user->bphUkm;
-        return view('bph.dashboardBPH', compact('ukm'));
+
+        // Menghitung jumlah mahasiswa yang tergabung dengan UKM ini
+        $c_anggota = $ukm->members->count();
+
+        // Menghitung jumlah aktivitas yang terkait dengan UKM ini
+        $c_aktivitas = $ukm->activities->count();
+
+        // Menghitung total kas untuk UKM ini
+        // $c_kas = $ukm->activities->ka->count();
+
+
+        return view('bph.dashboardBPH', compact('ukm', 'c_anggota', 'c_aktivitas'));
     }
 
     public function update(Request $request, $manage_ukm)
