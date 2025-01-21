@@ -8,7 +8,7 @@
 
     <!-- User Info & Logout -->
     <div class="d-flex align-items-center">
-      <span class="text-light me-3 mb-1">Hi,  {{ auth()->user()->email }}</span>
+      <span class="text-light me-3 mb-1">Hi, {{ auth()->user()->email }}</span>
       <form id="logout-form" action="{{ route('auth.logout') }}" method="POST" style="display: none;">
         @csrf
       </form>

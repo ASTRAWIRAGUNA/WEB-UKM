@@ -12,7 +12,7 @@
     <div class="main p-3">
       <div class="header d-flex justify-content-between align-items-center mb-4" >
         <div class="fw-semibold fs-3">Log Activity</div>
-        <div class="user profile d-flex align-items-center">Hi, achmadsymsl87@gmail.com</div>
+        <div class="user profile d-flex align-items-center">Hi, {{ auth()->user()->email }}</div>
       </div>
       <div class="text-center bg-light">
       @if ($errors->any())
