@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Ukm;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Models\Activity;
 
 class HomeController extends Controller
 {
@@ -19,8 +20,11 @@ class HomeController extends Controller
     }
 
 
-    public function detail()
+    public function detail($ukm_id)
     {
-        return view('mahasiswa.detail');
+        $activities = Activity::where('ukm_id', $ukm_id)->get();
+
+        // Kirim data kegiatan ke view
+        return view('mahasiswa.detail', compact('activities'));
     }
 }

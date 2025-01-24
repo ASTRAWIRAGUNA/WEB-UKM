@@ -48,5 +48,5 @@ Route::middleware(['auth', RoleMiddleware::class . ':BPH_UKM'])->group(function 
 Route::middleware(['auth', RoleMiddleware::class . ':Mahasiswa'])->group(function () {
     Route::resource('/home', HomeController::class);
     Route::post('/ukm/join', [AnggotaUkmController::class, 'joinUkm'])->name('ukm.join');
-    Route::get('/detail', [HomeController::class, 'detail']);
+    Route::get('/detail/{ukm_id}', [HomeController::class, 'detail'])->name('home.detail');
 });

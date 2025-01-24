@@ -39,7 +39,8 @@
                                             @endif
                                         @else
                                             @if (in_array($ukm->ukm_id, $ukmFollowed))
-                                                <a href="#" class="btn btn-primary">Detail</a>
+                                                <a href="{{ route('home.detail', ['ukm_id' => $ukm->ukm_id]) }}"
+                                                    class="btn btn-primary">Detail</a>
                                             @else
                                                 <button class="btn btn-secondary" disabled>Pendaftaran Ditutup</button>
                                             @endif
