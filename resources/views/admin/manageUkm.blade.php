@@ -104,7 +104,7 @@
             </tr>
           </thead>
           <tbody>
-            @foreach ($ukms as $ukm)
+            @forelse ($ukms as $ukm)
         <tr class="border">
           <th class="align-middle">{{ $loop->iteration }}</th>
           <td class="w-25 align-middle"><img
@@ -123,7 +123,11 @@
             class="fa-regular fa-trash-can text-danger"></i></i></button>
           </td>
         </tr>
-      @endforeach
+        @empty
+        <tr>
+            <td colspan="5" class="text-center">No data found</td>
+        </tr>
+      @endforelse
           </tbody>
         </table>
         <div class="pagination d-flex justify-content-end align-items-center">

@@ -17,8 +17,7 @@ class UkmController extends Controller
     
         if ($search) {
             $ukms = Ukm::with('bph')
-                ->where('name_ukm', 'like', "%$search%") 
-                
+                ->where('name_ukm', 'like', "%$search%")        
                 ->get();
         } else {
 
