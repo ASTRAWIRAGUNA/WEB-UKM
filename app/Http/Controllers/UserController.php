@@ -25,15 +25,6 @@ class UserController extends Controller
         return view('admin.manageUser', ['users' => $users]);
     }
 
-    // public function search(Request $request)
-    // {
-        
-    //     $search = $request->input('search');
-    //     $results = User::where('email', 'like', "%$search%")->get();
-
-    //     return view('admin.manageUser', ['results' => $results]);
-    // }
-
     public function store(Request $request)
     {
         // Validasi data yang diterima

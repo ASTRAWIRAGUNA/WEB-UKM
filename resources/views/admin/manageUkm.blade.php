@@ -57,7 +57,8 @@
   <div class="main p-3">
     <div class="header d-flex justify-content-between align-items-center mb-4">
       <div class="fw-semibold fs-3">Manage UKM</div>
-      <div class="user profile d-flex align-items-center">Hi, {{ auth()->user()->email }}</div>
+      {{-- sementara --}}
+      {{-- <div class="user profile d-flex align-items-center">Hi, {{ auth()->user()->email }}</div> --}}
     </div>
     <div class="text-center bg-light">
       @if ($errors->any())
@@ -77,8 +78,11 @@
             <span class="input-group-text bg-white border-0 pl-3">
               <i class="fa-solid fa-magnifying-glass text-muted"></i>
             </span>
-            <input type="text" class="form-control shadow-none border-0 pr-4 py-2 fw-semibold" placeholder="Search"
-              style="font-size: 12px;">
+            <form action="{{ route('manage-ukm.index')}}" method="GET">
+              <input type="text" name="search" class="form-control shadow-none border-0 pr-4 py-2 fw-semibold" placeholder="Search"
+                style="font-size: 12px;" value="{{ request('search') }}">
+                <button type="submit">Search</button>
+              </form>
           </div>
         </div>
         <hr>
@@ -104,11 +108,11 @@
         <tr class="border">
           <th class="align-middle">{{ $loop->iteration }}</th>
           <td class="w-25 align-middle"><img
-            src="{{ asset('storage/profile_photo_ukm/' . $ukm->profile_photo_ukm)}}" alt="" style="width: 20%">
+            src="{{ asset('storage/app/public/profile_photo_ukm/' . $ukm->profile_photo_ukm)}}" alt="" style="width: 20%">
           </td>
           <td class="align-middle">{{ $ukm->name_ukm }}</td>
           <td class="align-middle">{{ $ukm->description }}</td>
-          <td class="align-middle">{{ $ukm->bph->email ?? 'Tidak ada BPH' }}</td> <!-- Menampilkan email BPH -->
+          <td class="align-middle">{{ $ukm->bph->email ?? 'Tidak ada BPH' }}</td>
 
           <td class="align-middle">
           <button type="button" class="btn" data-bs-toggle="modal"

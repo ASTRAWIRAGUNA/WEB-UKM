@@ -84,6 +84,7 @@
               style="font-size: 12px;" value="{{ request('search') }}">
               <button type="submit">Search</button>
             </form>
+            
           </div>
         </div>
         <hr>
@@ -106,7 +107,7 @@
               <th>Action</th>
             </tr>
           </thead>
-          
+
           <tbody>
             @forelse ($users as $user)
                 <tr class="border">
