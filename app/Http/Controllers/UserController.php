@@ -16,10 +16,23 @@ class UserController extends Controller
 {
     public function index(Request $request)
     {
-        $users = User::all();
-
-        return view('admin.manageUser', compact('users'));
+        $search = $request->input('search');
+        if ($search) {
+            $users = User::where('email', 'like', "%$search%")->get();
+        } else {
+            $users = User::all();
+        }
+        return view('admin.manageUser', ['users' => $users]);
     }
+
+    // public function search(Request $request)
+    // {
+        
+    //     $search = $request->input('search');
+    //     $results = User::where('email', 'like', "%$search%")->get();
+
+    //     return view('admin.manageUser', ['results' => $results]);
+    // }
 
     public function store(Request $request)
     {

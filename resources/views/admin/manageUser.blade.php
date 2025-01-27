@@ -78,8 +78,12 @@
             <span class="input-group-text bg-white border-0 pl-3">
               <i class="fa-solid fa-magnifying-glass text-muted"></i>
             </span>
-            <input type="text" class="form-control shadow-none border-0 pr-4 py-2 fw-semibold" placeholder="Search"
-              style="font-size: 12px;">
+
+            <form action="{{ route('manage-user.index')}}" method="GET">
+            <input type="text" name="search" class="form-control shadow-none border-0 pr-4 py-2 fw-semibold" placeholder="Search"
+              style="font-size: 12px;" value="{{ request('search') }}">
+              <button type="submit">Search</button>
+            </form>
           </div>
         </div>
         <hr>
@@ -91,7 +95,6 @@
             <i class="fa-solid fa-plus"></i>Tambah User
           </button>
         </div>
-
         <table class="table caption-top table-bordered" style="border-radius: 10px;">
           <thead>
             <tr class="bg-gray-200 border">
@@ -103,26 +106,32 @@
               <th>Action</th>
             </tr>
           </thead>
+          
           <tbody>
-            @foreach ($users as $user)
-        <tr class="border">
-          <th class="align-middle">{{ $loop->iteration }}</th>
-          <td class="align-middle">{{ $user->nim }}</td>
-          <td class="align-middle">{{ $user->email }}</td>
-          <td class="align-middle">{{ $user->text_password }}</td>
-          <td class="align-middle">{{ $user->role }}</td>
-          <td class="align-middle">
-          <button type="button" class="btn" data-bs-toggle="modal"
-            data-bs-target="#updateUser-{{ $user->user_id }}"><i
-            class="fa-regular fa-pen-to-square text-warning"></i></button>
-          <button type="button" class="btn" data-bs-toggle="modal"
-            data-bs-target="#deleteUser-{{ $user->user_id }}"><i
-            class="fa-regular fa-trash-can text-danger"></i></i></button>
-          </td>
-        </tr>
-      @endforeach
-          </tbody>
-        </table>
+            @forelse ($users as $user)
+                <tr class="border">
+                    <th class="align-middle">{{ $loop->iteration }}</th>
+                    <td class="align-middle">{{ $user->nim }}</td>
+                    <td class="align-middle">{{ $user->email }}</td>
+                    <td class="align-middle">{{ $user->text_password }}</td>
+                    <td class="align-middle">{{ $user->role }}</td>
+                    <td class="align-middle">
+                        <button type="button" class="btn" data-bs-toggle="modal"
+                            data-bs-target="#updateUser-{{ $user->user_id }}"><i
+                            class="fa-regular fa-pen-to-square text-warning"></i></button>
+                        <button type="button" class="btn" data-bs-toggle="modal"
+                            data-bs-target="#deleteUser-{{ $user->user_id }}"><i
+                            class="fa-regular fa-trash-can text-danger"></i></button>
+                    </td>
+                </tr>
+            @empty
+                <tr>
+                    <td colspan="6" class="text-center">No data found</td>
+                </tr>
+            @endforelse
+        </tbody>
+        
+
         <div class="pagination d-flex justify-content-end align-items-center">
           <nav aria-label="Page navigation example">
             <ul class="pagination">
