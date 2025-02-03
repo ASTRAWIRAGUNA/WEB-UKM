@@ -14,11 +14,8 @@ class KegiatanUkmController extends Controller
     public function index()
     {
         $current_user = Auth::user();
-
         $ukm = $current_user->bphUkm;
-
         $kegiatans = Activity::where('ukm_id', $ukm->ukm_id)->get();
-
         return view('bph.manageKegiatan', compact('kegiatans'));
     }
 

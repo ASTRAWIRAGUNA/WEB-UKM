@@ -13,13 +13,24 @@ class UkmController extends Controller
 {
     public function index(Request $request)
     {
-        $ukms = Ukm::with('bph')->get();
-        $bph_ukm_users = User::where('role', 'BPH_UKM')
-            ->whereNotIn('id', Ukm::pluck('bph_id')) // Hindari pengguna yang sudah digunakan
-            ->get();
+        $search = $request->input('search'); 
+    
+        if ($search) {
+            $ukms = Ukm::with('bph')
+                ->where('name_ukm', 'like', "%$search%")        
+                ->get();
+        } else {
 
+            $ukms = Ukm::with('bph')->get();
+        }
+    
+        $bph_ukm_users = User::where('role', 'BPH_UKM')
+            ->whereNotIn('user_id', Ukm::pluck('bph_id'))
+            ->get();
+    
         return view('admin.manageUkm', compact('ukms', 'bph_ukm_users'));
     }
+    
 
     public function store(Request $request)
     {

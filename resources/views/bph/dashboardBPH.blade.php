@@ -131,8 +131,8 @@
     </div>
 
     <!-- Form Edit -->
-    {{-- <form id="ukmForm" class="d-none mt-4" method="POST" action="{{ route('update.profile', $ukm->ukm_id) }}"
-      enctype="multipart/form-data"> --}}
+    <form id="ukmForm" class="d-none mt-4" method="POST" action="{{ route('update.profile', $ukm->ukm_id) }}"
+      enctype="multipart/form-data">
       <form id="ukmForm" class="d-none mt-4" method="POST" action="{{ route('dashboard-ukm.update', $ukm->ukm_id) }}"
         enctype="multipart/form-data">
         @csrf
