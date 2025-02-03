@@ -49,4 +49,5 @@ Route::middleware(['auth', RoleMiddleware::class . ':Mahasiswa'])->group(functio
     Route::resource('/home', HomeController::class);
     Route::post('/ukm/join', [AnggotaUkmController::class, 'joinUkm'])->name('ukm.join');
     Route::get('/detail/{ukm_id}', [HomeController::class, 'detail'])->name('home.detail');
+    Route::post('/detail/scan', [HomeController::class, 'scan'])->name('attendance.scan');
 });

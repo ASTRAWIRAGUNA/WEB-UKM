@@ -37,29 +37,32 @@ class KegiatanUkmController extends Controller
             $proof_photo->storeAs('public/proof_photo', $imageName);
         }
 
-        // Data untuk QR Code
-        $qr_codeData = 'UKM-' . Auth::user()->bphUkm->ukm_id . '-' . now()->timestamp;
-        $qr_codePath = 'public/qr_code/' . uniqid() . '.png';
-
-        // Generate QR Code menggunakan API eksternal
-        $qrCodeUrl = 'https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=' . urlencode($qr_codeData);
-
-        // Unduh QR Code dari API ke folder storage
-        $qrImageContent = file_get_contents($qrCodeUrl);
-        Storage::put($qr_codePath, $qrImageContent);
-
-        // Simpan data kegiatan ke database
-        Activity::create([
+        // Simpan data kegiatan ke database terlebih dahulu
+        $activity = Activity::create([
             'ukm_id' => Auth::user()->bphUkm->ukm_id,
             'name_activity' => $request->name_activity,
             'date' => $request->date,
             'proof_photo' => $imageName,
-            'qr_code' => str_replace('public/', '', $qr_codePath), // Hapus 'public/' untuk akses publik
             'status_activity' => 'Pending',
+        ]);
+
+        // Buat QR Code setelah mendapatkan ID dari database
+        $qr_codeData = 'UKM-' . Auth::user()->bphUkm->ukm_id . '-ACT-' . $activity->activities_id;
+        $qr_codePath = 'public/qr_code/' . uniqid() . '.png';
+        $qrCodeUrl = 'https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=' . urlencode($qr_codeData);
+
+        // Unduh QR Code dari API
+        $qrImageContent = file_get_contents($qrCodeUrl);
+        Storage::put($qr_codePath, $qrImageContent);
+
+        // Perbarui aktivitas dengan path QR Code
+        $activity->update([
+            'qr_code' => str_replace('public/', '', $qr_codePath),
         ]);
 
         return redirect()->route('manage-kegiatan-ukm.index')->with('success', 'Berhasil Membuat Kegiatan UKM.');
     }
+
 
 
     public function update(Request $request, $activities_id)
@@ -72,14 +75,11 @@ class KegiatanUkmController extends Controller
 
         $kegiatan = Activity::findOrFail($activities_id);
 
-        // Mengupdate foto proof_photo jika ada file baru
         if ($request->hasFile('proof_photo')) {
-            // Menghapus foto lama jika ada
             if ($kegiatan->proof_photo && Storage::exists('public/proof_photo/' . $kegiatan->proof_photo)) {
                 Storage::delete('public/proof_photo/' . $kegiatan->proof_photo);
             }
 
-            // Menyimpan foto baru
             $proof_photo = $request->file('proof_photo');
             $imageName = $proof_photo->hashName();
             $proof_photo->storeAs('public/proof_photo', $imageName);
@@ -91,28 +91,27 @@ class KegiatanUkmController extends Controller
             Storage::delete('public/' . $kegiatan->qr_code);
         }
 
-        // Generate QR Code baru
-        $qr_codeData = 'UKM-' . $kegiatan->ukm_id . '-' . now()->timestamp;
+        // Buat QR Code baru dengan ID aktivitas
+        $qr_codeData = 'UKM-' . $kegiatan->ukm_id . '-ACT-' . $kegiatan->activities_id;
         $qr_codePath = 'public/qr_code/' . uniqid() . '.png';
-
-        // Generate QR Code menggunakan API eksternal
         $qrCodeUrl = 'https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=' . urlencode($qr_codeData);
 
-        // Unduh QR Code dari API ke folder storage
+        // Unduh QR Code dari API
         $qrImageContent = file_get_contents($qrCodeUrl);
         Storage::put($qr_codePath, $qrImageContent);
 
-        // Mengupdate Activity
+        // Perbarui data kegiatan
         $kegiatan->update([
             'name_activity' => $request->name_activity,
             'date' => $request->date,
-            'proof_photo' => $kegiatan->proof_photo, // Nama gambar yang baru
-            'qr_code' => str_replace('public/', '', $qr_codePath), // Path qr_code relatif yang baru
+            'proof_photo' => $kegiatan->proof_photo,
+            'qr_code' => str_replace('public/', '', $qr_codePath),
             'status_activity' => 'Pending',
         ]);
 
         return redirect()->route('manage-kegiatan-ukm.index')->with('success', 'UKM berhasil diperbarui!');
     }
+
 
     public function destroy($activities_id)
     {

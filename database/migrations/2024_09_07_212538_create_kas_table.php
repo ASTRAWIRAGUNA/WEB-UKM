@@ -18,8 +18,14 @@ return new class extends Migration
                 ->onDelete('cascade');
 
             $table->foreignId('user_id')
+                ->nullable()
                 ->constrained('users', 'user_id')
                 ->onDelete('set null');
+
+            $table->foreignId('activities_id')
+                ->nullable()
+                ->constrained('activities', 'activities_id')
+                ->onDelete('cascade'); // Pastikan kas ikut terhapus jika activity dihapus
 
             $table->integer('amount')->default(0);
             $table->integer('cash')->default(0);

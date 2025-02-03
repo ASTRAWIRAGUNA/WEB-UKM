@@ -1,9 +1,14 @@
 @extends('base')
 
 @section('head')
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet"
-    integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
-<script src="https://cdn.jsdelivr.net/npm/html5-qrcode/minified/html5-qrcode.min.js"></script>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
+<meta name="csrf-token" content="{{ csrf_token() }}">
+<style>
+    svg {
+        width: 100px;
+        height: 100px;
+    }
+</style>
 @endsection
 
 @section('body')
@@ -11,15 +16,15 @@
     @include('partials.navbarMahasiswa')
 
     <div class="main p-3">
-
         <div class="container mt-4">
             <div class="row justify-content-center gap-3">
                 @foreach ($activities as $activity)
-                    <div class="col-auto bg-light rounded-md" style="width: 25rem;">
-                        <div class="d-flex align-items-center justify-content-between p-3 text-center">
-                            <h5 class="">{{ $activity->name_activity }}</h5>
-                            <button class="btn btn-success ml-4" data-bs-toggle="modal" data-bs-target="#qrScanModal">
-                                <i class="fa-solid fa-expand text-white"></i>
+                    <div class="col-auto bg-light rounded-md p-3" style="width: 25rem;">
+                        <div class="d-flex align-items-center justify-content-between">
+                            <h5>{{ $activity->name_activity }}</h5>
+                            <button class="btn btn-success" data-bs-toggle="modal"
+                                data-bs-target="#qrScanModal-{{ $activity->activities_id }}">
+                                <i class="fa-solid fa-qrcode text-white"></i>
                             </button>
                         </div>
                     </div>
@@ -29,81 +34,164 @@
     </div>
 </div>
 
-<div class="modal fade" id="qrScanModal" tabindex="-1" aria-labelledby="qrScanModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="qrScanModalLabel">Scan QR Code</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <!-- Tempat untuk scanner -->
-                <div id="qrReader" style="width: 100%; height: 300px;"></div>
-                <p class="text-center mt-3">Arahkan kamera ke QR Code untuk absen.</p>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+@foreach ($activities as $activity)
+    <div class="modal fade" id="qrScanModal-{{ $activity->activities_id }}"
+        data-activity-id="{{ $activity->activities_id }}" tabindex="-1"
+        aria-labelledby="qrScanModalLabel-{{ $activity->activities_id }}" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Scan QR Code</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div id="qrScanner-{{ $activity->activities_id }}" style="width: 100%; height: 350px;"></div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+                </div>
             </div>
         </div>
     </div>
-</div>
+@endforeach
 
+
+<script src="https://cdn.jsdelivr.net/npm/html5-qrcode/minified/html5-qrcode.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
-    document.addEventListener('DOMContentLoaded', () => {
-        let html5QrCode;
-        let scannerStarted = false;
+    let scanners = {};
+    let isScanning = false; // Flag untuk mencegah request ganda
 
-        const modal = document.getElementById('qrScanModal');
-
-        // Fungsi untuk memulai scanner
-        const startScanner = () => {
-            if (scannerStarted) return; // Jika scanner sudah berjalan, tidak perlu memulai lagi
-
-            html5QrCode = new Html5Qrcode("qrReader");
-            html5QrCode.start(
-                { facingMode: "environment" }, // Gunakan kamera belakang
-                { fps: 10, qrbox: { width: 250, height: 250 } }, // Konfigurasi scanner
-                (decodedText) => {
-                    console.log(`Kode QR ditemukan: ${decodedText}`);
-                    alert(`Berhasil: ${decodedText}`);
-                    stopScanner(); // Hentikan scanner setelah berhasil membaca QR
-                    bootstrap.Modal.getInstance(modal).hide(); // Tutup modal
-                },
-                (errorMessage) => {
-                    console.warn(`Kesalahan QR Code: ${errorMessage}`);
-                }
-            ).then(() => {
-                scannerStarted = true;
-                console.log("Scanner dimulai.");
-            }).catch(err => {
-                console.error(`Kesalahan memulai scanner: ${err}`);
-            });
-        };
-
-        // Fungsi untuk menghentikan scanner
-        const stopScanner = () => {
-            if (!scannerStarted) return; // Jika scanner belum berjalan, abaikan
-
-            html5QrCode.stop().then(() => {
-                console.log("Scanner dihentikan.");
-            }).catch(err => {
-                console.error(`Kesalahan menghentikan scanner: ${err}`);
-            });
-
-            scannerStarted = false;
-        };
-
-        // Event listener untuk membuka modal
-        modal.addEventListener('shown.bs.modal', () => {
-            console.log("Modal dibuka.");
-            startScanner(); // Mulai scanner saat modal dibuka
-        });
-
-        // Event listener untuk menutup modal
-        modal.addEventListener('hidden.bs.modal', () => {
-            console.log("Modal ditutup.");
-            stopScanner(); // Hentikan scanner saat modal ditutup
-        });
+    $(document).on('hidden.bs.modal', function () {
+        // Mengecek jika tidak ada modal yang aktif
+        if ($('.modal:visible').length === 0) {
+            // Hapus backdrop hanya jika tidak ada modal yang aktif
+            $('.modal-backdrop').remove();
+        }
     });
+
+    $(document).on('shown.bs.modal', '[id^="qrScanModal-"]', function () {
+        let modal = $(this);
+        let activityId = modal.data('activity-id'); // Ambil ID aktivitas dari data modal
+        let scannerId = `qrScanner-${activityId}`;
+
+        // Cek apakah sudah ada scanner aktif untuk modal ini
+        if (scanners[scannerId]) {
+            // Jika scanner sudah ada, jangan mulai lagi
+            return;
+        }
+
+        // Pastikan div untuk scanner sudah ada di DOM
+        let qrScannerElement = document.getElementById(scannerId);
+        if (qrScannerElement) {
+            // Jika belum ada scanner, buat dan mulai scanner baru
+            scanners[scannerId] = new Html5Qrcode(scannerId);
+
+            scanners[scannerId].start(
+                { facingMode: "environment" }, // Menggunakan kamera belakang
+                { fps: 10, qrbox: { width: 250, height: 250 } }, // FPS dan ukuran QR code
+                function onScanSuccess(decodedText) {
+                    if (isScanning) return; // Mencegah request ganda
+                    isScanning = true;
+
+                    console.log("Scanned QR:", decodedText);
+
+                    let parts = decodedText.split('-');
+                    if (parts.length !== 4 || parts[0] !== "UKM" || parts[2] !== "ACT") {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'QR Code Tidak Valid!',
+                            text: 'QR Code ini tidak sesuai format.',
+                            timer: 3000,
+                            showConfirmButton: false
+                        });
+                        isScanning = false; // Reset flag
+                        return;
+                    }
+
+                    let parsedUkmId = parseInt(parts[1], 10); // Pastikan ukm_id valid
+                    let parsedActivityId = parts[3]; // Ambil ID aktivitas dari QR Code
+
+                    // Kirim data ke server untuk validasi absensi
+                    $.ajax({
+                        url: '{{ route("attendance.scan") }}',
+                        type: "POST",
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        },
+                        contentType: "application/json",
+                        data: JSON.stringify({
+                            activities_id: activityId,
+                            ukm_id: parsedUkmId,
+                            qr_code: decodedText
+                        }),
+                        success: function (response) {
+                            console.log("Server response:", response);
+                            modal.modal('hide'); // Sembunyikan modal setelah berhasil
+
+                            if (response.invalid_qr) {
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'QR Code Tidak Valid!',
+                                    text: 'QR Code ini bukan untuk aktivitas ini.',
+                                    timer: 3000,
+                                    showConfirmButton: false
+                                });
+                            } else if (response.already_absent) {
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Anda sudah absen!',
+                                    text: 'Anda telah melakukan absensi sebelumnya.',
+                                    timer: 3000,
+                                    showConfirmButton: false
+                                });
+                            } else {
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: 'Absen Berhasil!',
+                                    text: 'Absensi Anda telah tercatat.',
+                                    timer: 3000,
+                                    showConfirmButton: false
+                                });
+                            }
+                        },
+                        error: function (xhr) {
+                            console.error("Error response:", xhr.responseText);
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Terjadi Kesalahan!',
+                                text: 'Gagal mengirim data ke server.',
+                                timer: 3000,
+                                showConfirmButton: false
+                            });
+                        },
+                        complete: function () {
+                            isScanning = false; // Reset flag setelah request selesai
+                        }
+                    });
+                }
+            ).catch(err => {
+                console.error("Error memulai kamera:", err); // Menangani error jika ada
+            });
+        }
+    });
+
+    $(document).on('hidden.bs.modal', '[id^="qrScanModal-"]', function () {
+        let modal = $(this);
+        let activityId = modal.data('activity-id');
+        let scannerId = `qrScanner-${activityId}`;
+
+        // Hentikan dan hapus scanner saat modal ditutup
+        if (scanners[scannerId]) {
+            scanners[scannerId].stop().then(() => {
+                scanners[scannerId].clear();
+                delete scanners[scannerId];
+            }).catch(err => console.error("Error menghentikan scanner:", err));
+        }
+    });
+
+
 </script>
+
 @endsection
