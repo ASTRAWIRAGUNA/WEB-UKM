@@ -107,7 +107,6 @@
               <th>Action</th>
             </tr>
           </thead>
-
           <tbody>
             @forelse ($users as $user)
                 <tr class="border">
@@ -131,8 +130,7 @@
                 </tr>
             @endforelse
         </tbody>
-        
-
+        </table>
         <div class="pagination d-flex justify-content-end align-items-center">
           <nav aria-label="Page navigation example">
             <ul class="pagination">

@@ -23,6 +23,7 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('auth.logout')->
 Route::resource('/manage-user', UserController::class);
 Route::post('/import-user', [UserController::class, 'importUser'])->name('import-user');
 Route::resource('/manage-ukm', UkmController::class);
+Route::resource('/manage-laporan-ukm', LaporanUkmController::class);
 
 // Admin route
 Route::middleware(['auth', RoleMiddleware::class . ':Admin'])->group(function () {
@@ -30,7 +31,6 @@ Route::middleware(['auth', RoleMiddleware::class . ':Admin'])->group(function ()
     Route::post('/dashboard-admin/toggle-all-registration-status', [DashboardAdminController::class, 'toggleAllRegistrationStatus'])->name('dashboard-admin.toggleAllRegistrationStatus');
     // Route::resource('/manage-user', UserController::class);
     // Route::post('/import-user', [UserController::class, 'importUser'])->name('import-user');
-    Route::resource('/manage-laporan-ukm', LaporanUkmController::class);
     Route::resource('/log-activity', LogActivityController::class);
 });
 

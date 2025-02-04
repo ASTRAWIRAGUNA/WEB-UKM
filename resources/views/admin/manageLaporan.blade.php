@@ -12,7 +12,7 @@
   <div class="main p-3">
     <div class="header d-flex justify-content-between align-items-center mb-4">
       <div class="fw-semibold fs-3">Manage Laporan Kegiatan</div>
-      <div class="user profile d-flex align-items-center">Hi, {{ auth()->user()->email }}</div>
+      {{-- <div class="user profile d-flex align-items-center">Hi, {{ auth()->user()->email }}</div> --}}
     </div>
     <div class="text-center bg-light">
       @if ($errors->any())
@@ -50,7 +50,7 @@
             </tr>
           </thead>
           <tbody>
-            @foreach ($laporan_kegiatans as $kegiatan)
+            @forelse ($laporan_kegiatans as $kegiatan)
         <tr class="border">
           <th class="align-middle">{{ $loop->iteration }}</th>
           <td class="align-middle">{{ $kegiatan->ukm->name_ukm }}</td>
@@ -77,7 +77,11 @@
             class="fa-regular fa-pen-to-square text-warning"></i></button>
           </td>
         </tr>
-      @endforeach
+        @empty
+        <tr>
+            <td colspan="5" class="text-center">No data found</td>
+        </tr>
+      @endforelse
           </tbody>
         </table>
         <div class="pagination d-flex justify-content-end align-items-center">

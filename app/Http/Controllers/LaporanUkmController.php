@@ -8,12 +8,17 @@ use App\Models\Activity;
 
 class LaporanUkmController extends Controller
 {
-    public function index()
-    {
-        $laporan_kegiatans = Activity::all();
+    public function index(Request $request)
+{
+    $search = $request->input('search');
 
-        return view('admin.manageLaporan', compact('laporan_kegiatans'));
-    }
+    $laporan_kegiatans = Activity::when($search, function ($query) use ($search) {
+        return $query->where('name_activity', 'like', "%$search%");
+    })->paginate(10);
+
+    return view('admin.manageLaporan', compact('laporan_kegiatans'));
+}
+
 
     public function update(Request $request, $activities_id)
     {
