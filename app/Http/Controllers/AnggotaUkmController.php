@@ -10,22 +10,29 @@ use Illuminate\Support\Facades\DB;
 
 class AnggotaUkmController extends Controller
 {
-    public function index()
+
+    public function index(Request $request) 
     {
         $current_user = Auth::user();
-
         $ukm = $current_user->bphUkm;
-
         $members = $ukm->members;
 
-        $users = User::where('role', 'Mahasiswa')
-            ->leftJoin('ukm_user', 'users.user_id', '=', 'ukm_user.user_id')
-            ->whereNull('ukm_user.ukm_id')
-            ->get();
+        $search = $request->input('search');
 
+        $users = User::where('role', 'Mahasiswa')
+        ->leftJoin('ukm_user', 'users.user_id', '=', 'ukm_user.user_id')
+        ->whereNull('ukm_user.ukm_id')
+        ->when($search, function ($query) use ($search) {
+            return $query->where(function ($q) use ($search) {
+                $q->where('users.name', 'like', "%$search%")
+                  ->orWhere('users.email', 'like', "%$search%");
+            });
+        })
+        ->paginate(10);
 
         return view('bph.manageAnggota', compact('members', 'users'));
     }
+
 
     public function store(Request $request)
     {

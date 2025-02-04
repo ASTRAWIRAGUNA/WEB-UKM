@@ -25,6 +25,10 @@ Route::post('/import-user', [UserController::class, 'importUser'])->name('import
 Route::resource('/manage-ukm', UkmController::class);
 Route::resource('/manage-laporan-ukm', LaporanUkmController::class);
 
+Route::resource('/manage-anggota', controller: AnggotaUkmController::class);
+Route::resource('/manage-kegiatan-ukm', KegiatanUkmController::class);
+Route::resource('/manage-kas-ukm', KasUkmController::class);
+
 // Admin route
 Route::middleware(['auth', RoleMiddleware::class . ':Admin'])->group(function () {
     Route::resource('/dashboard-admin', DashboardAdminController::class);
@@ -37,9 +41,7 @@ Route::middleware(['auth', RoleMiddleware::class . ':Admin'])->group(function ()
 // Route untuk BPH_UKM
 Route::middleware(['auth', RoleMiddleware::class . ':BPH_UKM'])->group(function () {
     Route::resource('/dashboard-ukm', DashboardUkmController::class);
-    Route::resource('/manage-anggota', controller: AnggotaUkmController::class);
-    Route::resource('/manage-kegiatan-ukm', KegiatanUkmController::class);
-    Route::resource('/manage-kas-ukm', KasUkmController::class);
+
 });
 
 // Route untuk Mahasiswa

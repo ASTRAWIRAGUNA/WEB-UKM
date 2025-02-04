@@ -17,13 +17,17 @@ class UserController extends Controller
     public function index(Request $request)
     {
         $search = $request->input('search');
-        if ($search) {
-            $users = User::where('email', 'like', "%$search%")->get();
-        } else {
-            $users = User::all();
-        }
-        return view('admin.manageUser', ['users' => $users]);
+    
+        $users = User::query()
+            ->when($search, function ($query, $search) {
+                $query->where('email', 'like', "%$search%")
+                      ->orWhere('nim', 'like', "%$search%");
+            })
+            ->paginate(10);
+    
+        return view('admin.manageUser', compact('users'));
     }
+    
 
     public function store(Request $request)
     {
