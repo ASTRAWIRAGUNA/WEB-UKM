@@ -83,7 +83,19 @@
         </div>
         <hr>
         <div class="d-flex justify-content-between gap-3 mb-3 align-items-center">
-          <div class="amount-side fw-semibold">Total Kas Rp.3000.000</div>
+          <div class="left-side">
+            <div class="setCash d-flex align-items-center gap-2">
+              <div class="text">Kas:
+                <span id="setKasValue">{{ $amountCash }}</span>
+                <input type="number" id="setKasInput" class="form-control d-none" value="{{ $amountCash }}"
+                  style="width: 80px;">
+              </div>
+              <button id="toggleSetKasBtn" class="btn btn-primary">
+                <i class="fa-solid fa-pen"></i> Edit
+              </button>
+            </div>
+            <div class="amount-side fw-semibold">Total Kas Rp.3000.000</div>
+          </div>
           <div class="button-side">
             <button type="button" class="custom-btn btn-excel" data-bs-toggle="modal" data-bs-target="#importUser">
               <i class="fa-solid fa-file-export"></i>Export Kas
@@ -268,7 +280,50 @@
   </div>
 </div>
 @endforeach --}}
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"
-  integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe" crossorigin="anonymous"></script>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+  $(document).ready(function () {
+    const toggleBtn = $('#toggleSetKasBtn');
+    const setKasValue = $('#setKasValue');
+    const setKasInput = $('#setKasInput');
+
+    let isEditing = false;
+
+    toggleBtn.on('click', function () {
+      if (isEditing) {
+        const newValue = setKasInput.val();
+
+        $.ajax({
+          url: '{{ route("setKas") }}',
+          type: 'POST',
+          data: {
+            _token: '{{ csrf_token() }}',
+            cash: newValue
+          },
+          success: function (response) {
+            // Update nilai amountCash di tampilan
+            setKasValue.text(response.amountCash);
+            setKasValue.removeClass('d-none');
+
+            setKasInput.addClass('d-none');
+            toggleBtn.html('<i class="fa-solid fa-pen"></i> Edit');
+            isEditing = false;
+          },
+          error: function (xhr, status, error) {
+            console.log("Terjadi kesalahan: " + error);
+            alert("Gagal memperbarui kas. Silakan coba lagi.");
+          }
+        });
+      } else {
+        setKasValue.addClass('d-none');
+        setKasInput.removeClass('d-none').focus();
+
+        toggleBtn.html('<i class="fa-solid fa-save"></i> Simpan');
+        isEditing = true;
+      }
+    });
+  });
+</script>
 <script src="{{ asset('assets/js/hamburger.js')}} "></script>
 @endsection
