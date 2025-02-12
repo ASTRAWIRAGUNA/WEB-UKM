@@ -5,6 +5,21 @@
   integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
 <link rel="stylesheet" href="{{ asset('assets/css/styleAdmin.css') }}">
 <style>
+  .min-ukm {
+    display: flex;
+    align-items: center;
+    /* Membuat elemen sejajar vertikal di tengah */
+    gap: 10px;
+    /* Memberikan jarak antara elemen */
+  }
+
+  #minKegiatanInput {
+    width: 80px;
+    /* Sesuaikan lebar input */
+    display: inline-block;
+    /* Membuat input sejajar dengan teks */
+  }
+
   .card-box {
     display: flex;
     align-items: center;
@@ -41,7 +56,17 @@
       <div class="fw-semibold fs-3">Dashboard</div>
       <div class="user profile d-flex align-items-center">Hi, {{ auth()->user()->email }}</div>
     </div>
-    <div class="mb-3 d-flex justify-content-end">
+    <div class="mb-3 d-flex justify-content-between">
+      <div class="min-ukm d-flex align-items-center gap-2">
+        <div class="text">Minimal Pertemuan:
+          <span id="minKegiatanValue">{{ $min_activity }}</span>
+          <input type="number" id="minKegiatanInput" class="form-control d-none" value="{{ $min_activity }}"
+            style="width: 80px;">
+        </div>
+        <button id="toggleMinKegiatanBtn" class="btn btn-primary">
+          <i class="fa-solid fa-pen"></i> Edit
+        </button>
+      </div>
       <!-- Form untuk toggle status semua UKM -->
       <form action="{{ route('dashboard-admin.toggleAllRegistrationStatus') }}" method="POST" id="toggleForm">
         @csrf
@@ -146,6 +171,56 @@
           $('#flexSwitchCheckDefault').prop('checked', !$('#flexSwitchCheckDefault').is(':checked'));
         }
       });
+    });
+  });
+</script>
+<script>
+  $(document).on('click', '#toggleMinKegiatanBtn', function () {
+    const toggleBtn = $('#toggleMinKegiatanBtn');
+    const minKegiatanValue = $('#minKegiatanValue');
+    const minKegiatanInput = $('#minKegiatanInput');
+
+    let isEditing = false;
+
+    toggleBtn.on('click', function () {
+      if (isEditing) {
+        const newValue = minKegiatanInput.val();
+        $.ajax({
+          url: '{{ route("dashboard-admin.min-kegiatan") }}',
+          type: 'POST',
+          data: {
+            _token: '{{ csrf_token() }}',
+            min_activity: newValue
+          },
+          success: function (response) {
+            console.log(response); // Debugging untuk memastikan data yang diterima benar
+
+            minKegiatanValue.text(response.min_activity); // Update teks di <span>
+            minKegiatanValue.removeClass('d-none'); // Tampilkan kembali <span>
+
+            minKegiatanInput.addClass('d-none'); // Sembunyikan kembali input
+
+            // Paksa browser untuk mengambil ulang data terbaru
+            // minKegiatanValue.fadeOut(100, function () {
+            //   $(this).text(response.min_activity).fadeIn(100);
+            // });
+
+            toggleBtn.html('<i class="fa-solid fa-pen"></i> Edit');
+            isEditing = false;
+          },
+
+          error: function (xhr, status, error) {
+            console.log("Terjadi kesalahan: " + error);
+            alert("Gagal memperbarui minimal kegiatan. Silakan coba lagi.");
+          }
+        });
+      } else {
+        minKegiatanValue.addClass('d-none');
+        minKegiatanInput.removeClass('d-none').focus();
+
+        toggleBtn.html('<i class="fa-solid fa-save"></i> Simpan');
+        isEditing = true;
+      }
     });
   });
 </script>

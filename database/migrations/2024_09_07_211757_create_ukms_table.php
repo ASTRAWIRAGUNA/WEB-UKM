@@ -17,6 +17,7 @@ return new class extends Migration
             $table->foreignId('bph_id')->constrained('users', 'user_id')->onDelete('cascade');
             $table->enum('registration_status', ['active', 'deactivated'])->default('deactivated');
             $table->integer('min_activity')->default(0)->nullable();
+            $table->integer('cash')->default(0)->nullable();
             $table->timestamps();
         });
     }

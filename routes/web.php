@@ -22,26 +22,27 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('auth.logout')->
 
 Route::resource('/manage-user', UserController::class);
 Route::post('/import-user', [UserController::class, 'importUser'])->name('import-user');
-Route::resource('/manage-ukm', UkmController::class);
-Route::resource('/manage-laporan-ukm', LaporanUkmController::class);
-
-Route::resource('/manage-anggota', controller: AnggotaUkmController::class);
-Route::resource('/manage-kegiatan-ukm', KegiatanUkmController::class);
-Route::resource('/manage-kas-ukm', KasUkmController::class);
 
 // Admin route
 Route::middleware(['auth', RoleMiddleware::class . ':Admin'])->group(function () {
     Route::resource('/dashboard-admin', DashboardAdminController::class);
     Route::post('/dashboard-admin/toggle-all-registration-status', [DashboardAdminController::class, 'toggleAllRegistrationStatus'])->name('dashboard-admin.toggleAllRegistrationStatus');
+    Route::post('/dashboard-admin/min-kegiatan', [DashboardAdminController::class, 'minKegiatan'])->name('dashboard-admin.min-kegiatan');
     // Route::resource('/manage-user', UserController::class);
     // Route::post('/import-user', [UserController::class, 'importUser'])->name('import-user');
+    Route::resource('/manage-ukm', UkmController::class);
+    Route::resource('/manage-laporan-ukm', LaporanUkmController::class);
     Route::resource('/log-activity', LogActivityController::class);
 });
 
 // Route untuk BPH_UKM
 Route::middleware(['auth', RoleMiddleware::class . ':BPH_UKM'])->group(function () {
     Route::resource('/dashboard-ukm', DashboardUkmController::class);
-
+    Route::put('update/{ukm_id}', [DashboardUkmController::class, 'update'])->name('update.profile');
+    Route::resource('/manage-anggota', controller: AnggotaUkmController::class);
+    Route::resource('/manage-kegiatan-ukm', KegiatanUkmController::class);
+    Route::resource('/manage-kas-ukm', KasUkmController::class);
+    Route::post('/manage-kas-ukm/kas', [KasUkmController::class, 'setKas'])->name('setKas');
 });
 
 // Route untuk Mahasiswa

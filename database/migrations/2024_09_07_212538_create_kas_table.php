@@ -28,7 +28,6 @@ return new class extends Migration
                 ->onDelete('cascade'); // Pastikan kas ikut terhapus jika activity dihapus
 
             $table->integer('amount')->default(0);
-            $table->integer('cash')->default(0);
             $table->timestamps();
         });
     }

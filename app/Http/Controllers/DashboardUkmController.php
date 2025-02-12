@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Kas;
 use App\Models\Ukm;
 use Illuminate\Support\Facades\Auth;
 
@@ -22,7 +23,7 @@ class DashboardUkmController extends Controller
         $c_aktivitas = $ukm->activities->count();
 
         // Menghitung total kas untuk UKM ini
-        $c_kas = $ukm->activities->ka->count();
+        $c_kas = Kas::where('ukm_id', $ukm->ukm_id)->sum('amount');
 
 
         return view('bph.dashboardBPH', compact('ukm', 'c_anggota', 'c_aktivitas'));
