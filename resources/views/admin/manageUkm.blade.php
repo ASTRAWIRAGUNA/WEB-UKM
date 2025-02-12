@@ -79,10 +79,10 @@
               <i class="fa-solid fa-magnifying-glass text-muted"></i>
             </span>
             <form action="{{ route('manage-ukm.index')}}" method="GET">
-              <input type="text" name="search" class="form-control shadow-none border-0 pr-4 py-2 fw-semibold" placeholder="Search"
-                style="font-size: 12px;" value="{{ request('search') }}">
-                <button type="submit">Search</button>
-              </form>
+              <input type="text" name="search" class="form-control shadow-none border-0 pr-4 py-2 fw-semibold"
+                placeholder="Search" style="font-size: 12px;" value="{{ request('search') }}">
+              <button type="submit">Search</button>
+            </form>
           </div>
         </div>
         <hr>
@@ -108,7 +108,7 @@
         <tr class="border">
           <th class="align-middle">{{ $loop->iteration }}</th>
           <td class="w-25 align-middle"><img
-            src="{{ asset('storage/app/public/profile_photo_ukm/' . $ukm->profile_photo_ukm)}}" alt="" style="width: 20%">
+            src="{{ asset('storage/profile_photo_ukm/' . $ukm->profile_photo_ukm)}}" alt="" style="width: 20%">
           </td>
           <td class="align-middle">{{ $ukm->name_ukm }}</td>
           <td class="align-middle">{{ $ukm->description }}</td>
@@ -123,11 +123,11 @@
             class="fa-regular fa-trash-can text-danger"></i></i></button>
           </td>
         </tr>
-        @empty
-        <tr>
-            <td colspan="5" class="text-center">No data found</td>
-        </tr>
-      @endforelse
+      @empty
+    <tr>
+      <td colspan="5" class="text-center">No data found</td>
+    </tr>
+  @endforelse
           </tbody>
         </table>
         <div class="pagination d-flex justify-content-end align-items-center">
