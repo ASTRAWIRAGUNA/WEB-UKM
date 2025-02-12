@@ -16,18 +16,21 @@ class UserController extends Controller
 {
     public function index(Request $request)
     {
+        // Ambil parameter search dari request
         $search = $request->input('search');
-    
+
+        // Query untuk mencari data user berdasarkan NIM, email, atau nama
         $users = User::query()
             ->when($search, function ($query, $search) {
-                $query->where('email', 'like', "%$search%")
-                      ->orWhere('nim', 'like', "%$search%");
+                $query->where('nim', 'like', "%$search%")
+                    ->orWhere('email', 'like', "%$search%")
+                    ->orWhere('role', 'like', "%$search%");
             })
-            ->paginate(10);
-    
-        return view('admin.manageUser', compact('users'));
+            ->paginate(20); // Pagination dengan maksimal 20 data per halaman
+
+        return view('admin.manageUser', compact('users', 'search'));
     }
-    
+
 
     public function store(Request $request)
     {

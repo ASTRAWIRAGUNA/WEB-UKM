@@ -13,24 +13,27 @@ class UkmController extends Controller
 {
     public function index(Request $request)
     {
-        $search = $request->input('search'); 
-    
-        if ($search) {
-            $ukms = Ukm::with('bph')
-                ->where('name_ukm', 'like', "%$search%")        
-                ->get();
-        } else {
+        $search = $request->input('search');
 
-            $ukms = Ukm::with('bph')->get();
-        }
-    
+        // Query untuk mencari data UKM berdasarkan nama UKM, deskripsi, atau email BPH
+        $ukms = Ukm::with('bph')
+            ->when($search, function ($query, $search) {
+                $query->where('name_ukm', 'like', "%$search%")
+                    ->orWhere('description', 'like', "%$search%")
+                    ->orWhereHas('bph', function ($q) use ($search) {
+                        $q->where('email', 'like', "%$search%");
+                    });
+            })
+            ->paginate(20); // Pagination dengan maksimal 20 data per halaman
+
+        // Ambil data BPH UKM yang belum memiliki UKM
         $bph_ukm_users = User::where('role', 'BPH_UKM')
             ->whereNotIn('user_id', Ukm::pluck('bph_id'))
             ->get();
-    
-        return view('admin.manageUkm', compact('ukms', 'bph_ukm_users'));
+
+        return view('admin.manageUkm', compact('ukms', 'bph_ukm_users', 'search'));
     }
-    
+
 
     public function store(Request $request)
     {

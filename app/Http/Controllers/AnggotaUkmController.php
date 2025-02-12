@@ -11,28 +11,37 @@ use Illuminate\Support\Facades\DB;
 class AnggotaUkmController extends Controller
 {
 
-    public function index(Request $request) 
+    public function index(Request $request)
     {
         $current_user = Auth::user();
         $ukm = $current_user->bphUkm;
-        $members = $ukm->members;
 
         $search = $request->input('search');
 
+        // Query untuk mencari data anggota berdasarkan nama atau email
+        $members = $ukm->members()
+            ->when($search, function ($query, $search) {
+                return $query->where(function ($q) use ($search) {
+                    $q->where('email', 'like', "%$search%")
+                        ->orWhere('nim', 'like', "%$search%");
+                });
+            })
+            ->paginate(10); // Pagination dengan maksimal 10 data per halaman
+
+        // Query untuk mencari user yang belum menjadi anggota UKM
         $users = User::where('role', 'Mahasiswa')
-        ->leftJoin('ukm_user', 'users.user_id', '=', 'ukm_user.user_id')
-        ->whereNull('ukm_user.ukm_id')
-        ->when($search, function ($query) use ($search) {
-            return $query->where(function ($q) use ($search) {
-                $q->where('users.name', 'like', "%$search%")
-                  ->orWhere('users.email', 'like', "%$search%");
-            });
-        })
-        ->paginate(10);
+            ->leftJoin('ukm_user', 'users.user_id', '=', 'ukm_user.user_id')
+            ->whereNull('ukm_user.ukm_id')
+            ->when($search, function ($query, $search) {
+                return $query->where(function ($q) use ($search) {
+                    $q->where('users.name', 'like', "%$search%")
+                        ->orWhere('users.email', 'like', "%$search%");
+                });
+            })
+            ->paginate(10); // Pagination dengan maksimal 10 data per halaman
 
-        return view('bph.manageAnggota', compact('members', 'users'));
+        return view('bph.manageAnggota', compact('members', 'users', 'search'));
     }
-
 
     public function store(Request $request)
     {

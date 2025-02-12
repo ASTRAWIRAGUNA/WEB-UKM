@@ -11,12 +11,24 @@ use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 class KegiatanUkmController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         $current_user = Auth::user();
         $ukm = $current_user->bphUkm;
-        $kegiatans = Activity::where('ukm_id', $ukm->ukm_id)->get();
-        return view('bph.manageKegiatan', compact('kegiatans'));
+
+        // Ambil parameter search dari request
+        $search = $request->input('search');
+
+        // Query untuk mencari data kegiatan berdasarkan nama kegiatan, tanggal, atau pesan
+        $kegiatans = Activity::where('ukm_id', $ukm->ukm_id)
+            ->when($search, function ($query, $search) {
+                return $query->where('name_activity', 'like', "%$search%")
+                    ->orWhere('date', 'like', "%$search%")
+                    ->orWhere('message', 'like', "%$search%");
+            })
+            ->paginate(20); // Pagination dengan maksimal 10 data per halaman
+
+        return view('bph.manageKegiatan', compact('kegiatans', 'search'));
     }
 
     public function store(Request $request)

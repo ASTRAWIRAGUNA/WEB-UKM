@@ -58,7 +58,7 @@
     <div class="header d-flex justify-content-between align-items-center mb-4">
       <div class="fw-semibold fs-3">Manage UKM</div>
       {{-- sementara --}}
-      {{-- <div class="user profile d-flex align-items-center">Hi, {{ auth()->user()->email }}</div> --}}
+      <div class="user profile d-flex align-items-center">Hi, {{ auth()->user()->email }}</div>
     </div>
     <div class="text-center bg-light">
       @if ($errors->any())
@@ -73,15 +73,13 @@
       <div class="tables px-4 py-3 shadow-sm bg-light" style="border-radius: 10px;">
         <div class="d-flex justify-content-between align-items-center">
           <div class="fw-medium fs-4">Data</div>
-          <div class="input-group"
-            style="max-width: 150px; border: 2px solid #D3CFCF; border-radius: 8px; overflow: hidden;">
-            <span class="input-group-text bg-white border-0 pl-3">
-              <i class="fa-solid fa-magnifying-glass text-muted"></i>
-            </span>
-            <form action="{{ route('manage-ukm.index')}}" method="GET">
+          <div class="input-group ms-auto" style="max-width: 150px;">
+            <form action="{{ route('manage-ukm.index') }}" method="GET" class="d-flex gap-2">
               <input type="text" name="search" class="form-control shadow-none border-0 pr-4 py-2 fw-semibold"
                 placeholder="Search" style="font-size: 12px;" value="{{ request('search') }}">
-              <button type="submit">Search</button>
+              <button type="submit" class="btn btn-primary">
+                <i class="fa-solid fa-magnifying-glass"></i>
+              </button>
             </form>
           </div>
         </div>
@@ -125,27 +123,15 @@
         </tr>
       @empty
     <tr>
-      <td colspan="5" class="text-center">No data found</td>
+      <td colspan="6" class="text-center">No data found</td>
     </tr>
   @endforelse
           </tbody>
         </table>
-        <div class="pagination d-flex justify-content-end align-items-center">
-          <nav aria-label="Page navigation example">
+        <div class="d-flex justify-content-center">
+          <nav aria-label="Page navigation">
             <ul class="pagination">
-              <li class="page-item">
-                <a class="page-link" href="#" aria-label="Previous">
-                  <span aria-hidden="true">&laquo;</span>
-                </a>
-              </li>
-              <li class="page-item"><a class="page-link" href="#">1</a></li>
-              <li class="page-item"><a class="page-link" href="#">2</a></li>
-              <li class="page-item"><a class="page-link" href="#">3</a></li>
-              <li class="page-item">
-                <a class="page-link" href="#" aria-label="Next">
-                  <span aria-hidden="true">&raquo;</span>
-                </a>
-              </li>
+              {{ $ukms->appends(['search' => request('search')])->onEachSide(1)->links('pagination::bootstrap-5') }}
             </ul>
           </nav>
         </div>

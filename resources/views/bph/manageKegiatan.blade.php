@@ -72,13 +72,14 @@
       <div class="tables px-4 py-3 shadow-sm bg-light" style="border-radius: 10px;">
         <div class="d-flex justify-content-between align-items-center">
           <div class="fw-medium fs-4">Data</div>
-          <div class="input-group"
-            style="max-width: 150px; border: 2px solid #D3CFCF; border-radius: 8px; overflow: hidden;">
-            <span class="input-group-text bg-white border-0 pl-3">
-              <i class="fa-solid fa-magnifying-glass text-muted"></i>
-            </span>
-            <input type="text" class="form-control shadow-none border-0 pr-4 py-2 fw-semibold" placeholder="Search"
-              style="font-size: 12px;">
+          <div class="input-group ms-auto" style="max-width: 150px;">
+            <form action="{{ route('manage-kegiatan-ukm.index') }}" method="GET" class="d-flex gap-2">
+              <input type="text" name="search" class="form-control shadow-none border-0 pr-4 py-2 fw-semibold"
+                placeholder="Search" style="font-size: 12px;" value="{{ request('search') }}">
+              <button type="submit" class="btn btn-primary">
+                <i class="fa-solid fa-magnifying-glass"></i>
+              </button>
+            </form>
           </div>
         </div>
         <hr>
@@ -102,14 +103,16 @@
             </tr>
           </thead>
           <tbody>
-            @foreach ($kegiatans as $kegiatan)
+            @forelse ($kegiatans as $kegiatan)
         <tr class="border">
-          <th class="align-middle">{{ $loop->iteration }}</th>
+          <th class="align-middle">{{ $loop->iteration + ($kegiatans->currentPage() - 1) * $kegiatans->perPage() }}
+          </th>
           <td class="align-middle">{{ $kegiatan->name_activity }}</td>
           <td class="align-middle">{{ $kegiatan->date }}</td>
-
-          <td class="align-middle"><img src="{{ asset('storage/proof_photo/' . $kegiatan->proof_photo) }}" alt=""
-            srcset="" style="width: 60%" class="ratio ratio-16x9"></td>
+          <td class="align-middle">
+          <img src="{{ asset('storage/proof_photo/' . $kegiatan->proof_photo) }}" alt="" style="width: 60%"
+            class="ratio ratio-16x9">
+          </td>
           <td class="align-middle">{{ $kegiatan->message }}</td>
           <td class="align-middle">
           @if ($kegiatan->status_activity == 'Pending')
@@ -122,35 +125,30 @@
           </td>
           <td class="align-middle">
           <button type="button" class="btn" data-bs-toggle="modal"
-            data-bs-target="#qrcodeKegiatan-{{ $kegiatan->activities_id }}"><i
-            class="fa-solid fa-qrcode text-success"></i></button>
+            data-bs-target="#qrcodeKegiatan-{{ $kegiatan->activities_id }}">
+            <i class="fa-solid fa-qrcode text-success"></i>
+          </button>
           <button type="button" class="btn" data-bs-toggle="modal"
-            data-bs-target="#updateKegiatan-{{ $kegiatan->activities_id }}"><i
-            class="fa-regular fa-pen-to-square text-warning"></i></button>
+            data-bs-target="#updateKegiatan-{{ $kegiatan->activities_id }}">
+            <i class="fa-regular fa-pen-to-square text-warning"></i>
+          </button>
           <button type="button" class="btn" data-bs-toggle="modal"
-            data-bs-target="#deleteKegiatan-{{ $kegiatan->activities_id }}"><i
-            class="fa-regular fa-trash-can text-danger"></i></i></button>
+            data-bs-target="#deleteKegiatan-{{ $kegiatan->activities_id }}">
+            <i class="fa-regular fa-trash-can text-danger"></i>
+          </button>
           </td>
         </tr>
-      @endforeach
+      @empty
+    <tr>
+      <td colspan="7" class="text-center">No data found</td>
+    </tr>
+  @endforelse
           </tbody>
         </table>
-        <div class="pagination d-flex justify-content-end align-items-center">
-          <nav aria-label="Page navigation example">
+        <div class="d-flex justify-content-center">
+          <nav aria-label="Page navigation">
             <ul class="pagination">
-              <li class="page-item">
-                <a class="page-link" href="#" aria-label="Previous">
-                  <span aria-hidden="true">&laquo;</span>
-                </a>
-              </li>
-              <li class="page-item"><a class="page-link" href="#">1</a></li>
-              <li class="page-item"><a class="page-link" href="#">2</a></li>
-              <li class="page-item"><a class="page-link" href="#">3</a></li>
-              <li class="page-item">
-                <a class="page-link" href="#" aria-label="Next">
-                  <span aria-hidden="true">&raquo;</span>
-                </a>
-              </li>
+              {{ $kegiatans->appends(['search' => request('search')])->onEachSide(1)->links('pagination::bootstrap-5') }}
             </ul>
           </nav>
         </div>

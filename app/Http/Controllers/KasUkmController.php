@@ -9,19 +9,26 @@ use Illuminate\Support\Facades\Auth;
 
 class KasUkmController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         $current_user = Auth::user();
         $ukm_id = $current_user->bphUkm->ukm_id;
-        $kas = Kas::where('ukm_id', $ukm_id)->first();
 
+        // Ambil data kas berdasarkan ukm_id
+        $kas = Kas::where('ukm_id', $ukm_id)->first();
         $amountCash = $kas ? $kas->cash : 0;
 
-        $dateActivities = $current_user->bphUkm->activities()->get();
+        // Query untuk mencari data kegiatan berdasarkan tanggal atau nama kegiatan
+        $search = $request->input('search');
+        $dateActivities = $current_user->bphUkm->activities()
+            ->when($search, function ($query, $search) {
+                return $query->where('name_activity', 'like', "%$search%")
+                    ->orWhere('date', 'like', "%$search%");
+            })
+            ->paginate(10); // Pagination dengan maksimal 10 data per halaman
 
-        return view('bph.manageKas', compact('dateActivities', 'amountCash'));
+        return view('bph.manageKas', compact('dateActivities', 'amountCash', 'search'));
     }
-
     public function setKas(Request $request)
     {
         $current_user = Auth::user();

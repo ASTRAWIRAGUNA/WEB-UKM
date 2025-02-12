@@ -9,15 +9,22 @@ use App\Models\Activity;
 class LaporanUkmController extends Controller
 {
     public function index(Request $request)
-{
-    $search = $request->input('search');
+    {
+        $search = $request->input('search');
 
-    $laporan_kegiatans = Activity::when($search, function ($query) use ($search) {
-        return $query->where('name_activity', 'like', "%$search%");
-    })->paginate(10);
+        // Query untuk mencari data laporan kegiatan berdasarkan nama kegiatan, nama UKM, atau pesan
+        $laporan_kegiatans = Activity::with('ukm')
+            ->when($search, function ($query, $search) {
+                $query->where('name_activity', 'like', "%$search%")
+                    ->orWhereHas('ukm', function ($q) use ($search) {
+                        $q->where('name_ukm', 'like', "%$search%");
+                    })
+                    ->orWhere('message', 'like', "%$search%");
+            })
+            ->paginate(20); // Pagination dengan maksimal 10 data per halaman
 
-    return view('admin.manageLaporan', compact('laporan_kegiatans'));
-}
+        return view('admin.manageLaporan', compact('laporan_kegiatans', 'search'));
+    }
 
 
     public function update(Request $request, $activities_id)
