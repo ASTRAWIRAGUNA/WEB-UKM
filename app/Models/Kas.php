@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Kas extends Model
 {
     protected $primaryKey = 'kas_id';
-    protected $fillable = ['ukm_id', 'user_id', 'amount'];
+    protected $fillable = ['ukm_id', 'user_id', 'activities_id', 'amount', 'is_payment'];
 
     public function ukm()
     {
@@ -18,5 +18,10 @@ class Kas extends Model
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function activity()
+    {
+        return $this->belongsTo(Activity::class, 'activities_id');
     }
 }

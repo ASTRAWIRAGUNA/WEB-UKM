@@ -61,4 +61,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(Logs::class);
     }
+
+    public function kas()
+    {
+        return $this->hasMany(Kas::class, 'user_id');
+    }
 }
