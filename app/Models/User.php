@@ -6,6 +6,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use App\Models\Attendances;
 
 class User extends Authenticatable
 {
@@ -18,7 +19,7 @@ class User extends Authenticatable
      */
 
     protected $primaryKey = 'user_id';
-    protected $fillable = ['nim', 'email', 'password', 'text_password', 'role'];
+    protected $fillable = ['nim', 'email', 'password', 'text_password', 'role', 'active_member'];
 
 
     /**
@@ -42,6 +43,11 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    public function attendances()
+    {
+        return $this->hasMany(Attendances::class, 'user_id', 'user_id');
     }
     // Relasi ke Ukm Sebagai BphUKM
     public function bphUkm()

@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Activity;
+use App\Models\Attendances;
+use App\Models\Kas;
 use App\Models\Ukm;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -10,7 +13,6 @@ use Illuminate\Support\Facades\DB;
 
 class AnggotaUkmController extends Controller
 {
-
     public function index(Request $request)
     {
         $current_user = Auth::user();
@@ -26,7 +28,41 @@ class AnggotaUkmController extends Controller
                         ->orWhere('nim', 'like', "%$search%");
                 });
             })
-            ->paginate(10); // Pagination dengan maksimal 10 data per halaman
+            ->paginate(20); // Pagination dengan maksimal 10 data per halaman
+
+        // Hitung presentase kehadiran dan pembayaran kas untuk setiap anggota
+        foreach ($members as $member) {
+            // Hitung total kegiatan yang harus dihadiri user ini
+            $totalActivities = Activity::where('ukm_id', $ukm->ukm_id)->count();
+
+            // Hitung total kehadiran user ini
+            $totalAttendance = Attendances::where('user_id', $member->user_id)
+                ->where('is_present', true)
+                ->count();
+
+            // Hitung persentase kehadiran
+            $attendancePercentage = ($totalActivities > 0) ? round(($totalAttendance / $totalActivities) * 100, 2) : 0;
+
+            // Hitung total kas yang harus dibayar oleh user ini
+            $totalKas = Kas::where('ukm_id', $ukm->ukm_id)
+                ->where('user_id', $member->user_id) // Pastikan kas dihitung per user
+                ->count();
+
+            // Hitung total kas yang sudah dibayar oleh user ini
+            $totalPaidKas = Kas::where('user_id', $member->user_id)
+                ->where('ukm_id', $ukm->ukm_id) // Pastikan kas dihitung per UKM
+                ->where('is_payment', true)
+                ->count();
+
+            // Hitung persentase kas
+            $kasPercentage = ($totalKas > 0) ? round(($totalPaidKas / $totalKas) * 100, 2) : 0;
+
+            $isActive = ($kasPercentage == 100 && $attendancePercentage >= 75);
+
+            $member->attendancePercentage = $attendancePercentage;
+            $member->kasPercentage = $kasPercentage;
+            $member->isActive = $isActive;
+        }
 
         // Query untuk mencari user yang belum menjadi anggota UKM
         $users = User::where('role', 'Mahasiswa')
@@ -38,7 +74,7 @@ class AnggotaUkmController extends Controller
                         ->orWhere('users.email', 'like', "%$search%");
                 });
             })
-            ->paginate(10); // Pagination dengan maksimal 10 data per halaman
+            ->paginate(20); // Pagination dengan maksimal 20 data per halaman
 
         return view('bph.manageAnggota', compact('members', 'users', 'search'));
     }

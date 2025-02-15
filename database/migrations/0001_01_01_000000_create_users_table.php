@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('password');
             $table->string('text_password');
             $table->string('role');
+            $table->boolean('active_member')->default(false)->nullable();
             $table->rememberToken();
             $table->timestamps();
         });
