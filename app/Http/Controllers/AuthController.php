@@ -19,7 +19,7 @@ class AuthController extends Controller
     public function login(Request $request)
     {
         $credentials = $request->validate([
-            'nim' => ['required', 'string', new CustomValidation], // Gunakan custom rule
+            'nim' => ['required', 'string', new CustomValidation],
             'email' => 'required|email',
             'password' => 'required',
         ]);
