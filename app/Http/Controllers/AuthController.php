@@ -38,6 +38,12 @@ class AuthController extends Controller
                     $logs->save();
                     return redirect()->route('dashboard-admin.index');
                 case 'BPH_UKM':
+                    // Cek apakah user adalah BPH dari suatu UKM
+                    if (!$user->bphUkm) {
+                        Auth::logout(); // Logout user jika bukan BPH dari UKM mana pun
+                        return redirect()->route('login')->withErrors('Anda belum terdaftar sebagai BPH dari UKM mana pun.');
+                    }
+
                     $current_user = Auth::user()->email;
                     $logs = Logs::create([
                         'user_id' => Auth::id(),
@@ -57,7 +63,7 @@ class AuthController extends Controller
                     return redirect()->route('home.index');
                 default:
                     Auth::logout();
-                    return redirect()->route('login')->withErrors('Role tidak dikenal.');
+                    return redirect()->route('login')->withErrors('Email, NIM, atau password salah.');
             }
         }
 
