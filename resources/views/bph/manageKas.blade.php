@@ -137,7 +137,7 @@
           @php
         // Menjumlahkan semua 'amount' untuk user ini yang sudah dibayarkan
         $totalAmount = $member->kas->where('is_payment', true)->sum('amount');
-    @endphp
+      @endphp
           Rp. {{ number_format($totalAmount, 0, ',', '.') }}
           </td>
           <td class="align-middle">
@@ -225,7 +225,7 @@
         setKasValue.text(response.cash);
         setKasValue.removeClass('d-none');
         setKasInput.addClass('d-none');
-        toggleBtn.html('<i class="fa-solid fa-pen text-white"></i> Edit');
+        toggleBtn.html('<i class="fa-solid fa-pen text-white"></i>');
         isEditing = false;
         },
         error: function (xhr, status, error) {
@@ -236,7 +236,7 @@
       } else {
       setKasValue.addClass('d-none');
       setKasInput.removeClass('d-none').focus();
-      toggleBtn.html('<i class="fa-solid fa-save"></i> Simpan');
+      toggleBtn.html('<i class="fa-solid fa-save text-white"></i>');
       isEditing = true;
       }
     });
