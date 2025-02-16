@@ -60,11 +60,11 @@
       <div class="min-ukm d-flex align-items-center gap-2">
       <div class="text">Minimal Pertemuan:
         <span id="minKegiatanValue">{{ $min_activity }}</span>
-        <input type="number" id="minKegiatanInput" class="form-control d-none" value="{{ $min_activity }}"
-        style="width: 80px;">
+        <input type="number" id="minKegiatanInput" class=" form-control d-none shadow-none"
+        value="{{ $min_activity }}" style="width: 50px;">
       </div>
-      <button id="toggleMinKegiatanBtn" class="btn btn-primary">
-        <i class="fa-solid fa-pen"></i> Edit
+      <button id="toggleMinKegiatanBtn" class="btn btn-warning shadow-none">
+        <i class="fa-solid fa-pen text-white"></i>
       </button>
       </div>
       <!-- Form untuk toggle status semua UKM -->
@@ -153,7 +153,6 @@
         console.log("Server response: ", response);  // Log the server response
         alert(response.message);  // Show a success message
 
-        // Update the switch status in the UI based on the server response
         if (response.status === 'on') {
         $('#flexSwitchCheckDefault').prop('checked', true);
         } else if (response.status === 'off') {
@@ -165,7 +164,6 @@
       error: function (xhr, status, error) {
         console.log("Terjadi kesalahan: " + error);  // Log the error
         alert("Gagal mengubah status. Silakan coba lagi.");  // Show an error message
-        // Revert the switch status if an error occurs
         $('#flexSwitchCheckDefault').prop('checked', !$('#flexSwitchCheckDefault').is(':checked'));
       }
       });
@@ -216,7 +214,7 @@
       minKegiatanValue.addClass('d-none');
       minKegiatanInput.removeClass('d-none').focus();
 
-      toggleBtn.html('<i class="fa-solid fa-save"></i> Simpan');
+      toggleBtn.html('<i class="fa-solid fa-save text-white"></i>');
       isEditing = true;
       }
     });

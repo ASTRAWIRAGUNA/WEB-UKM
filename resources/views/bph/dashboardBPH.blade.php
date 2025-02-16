@@ -124,7 +124,7 @@
         <h2 class="fw-bold" id="nameDisplay">{{ $ukm->name_ukm }}</h2>
         <p id="descriptionDisplay">{{ $ukm->description }}</p>
       </div>
-      <button class="custom-btn btn-edit" onclick="toggleEditForm('ukm')">
+      <button class="custom-btn btn-edit shadow-none" onclick="toggleEditForm('ukm')">
         <i class="fa-regular fa-pen-to-square"></i>
       </button>
       </div>
@@ -156,8 +156,9 @@
         </div>
         <!-- Bagian Tombol -->
         <div class="mt-auto d-flex justify-content-end">
-          <button type="submit" class="btn btn-primary me-2">Save</button>
-          <button type="button" onclick="toggleEditForm('ukm')" class="btn btn-secondary">Cancel</button>
+          <button type="submit" class="btn btn-primary me-2 shadow-none">Save</button>
+          <button type="button" onclick="toggleEditForm('ukm')"
+          class="btn btn-secondary shadow-none">Cancel</button>
         </div>
         </div>
       </div>

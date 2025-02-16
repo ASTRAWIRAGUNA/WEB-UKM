@@ -1,6 +1,6 @@
 <aside id="sidebar">
     <div class="d-flex">
-        <button class="toggle-btn" type="button">
+        <button class="toggle-btn shadow-none" type="button">
             <img src="{{ asset('assets/images/BEM.png')}}" alt="" srcset="" style="width: 30px; height: 30px;">
         </button>
         <div class="sidebar-logo">

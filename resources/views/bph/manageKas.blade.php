@@ -88,11 +88,11 @@
         <div class="setCash d-flex align-items-center gap-2">
           <div class="text">Kas:
           <span id="setKasValue">{{ $amountCash }}</span>
-          <input type="number" id="setKasInput" class="form-control d-none" value="{{ $amountCash }}"
-            style="width: 80px;">
+          <input type="number" id="setKasInput" class="form-control d-none shadow-none" value="{{ $amountCash }}"
+            style="width: 50px;">
           </div>
-          <button id="toggleSetKasBtn" class="btn btn-primary">
-          <i class="fa-solid fa-pen"></i> Edit
+          <button id="toggleSetKasBtn" class="btn btn-warning shadow-none">
+          <i class="fa-solid fa-pen text-white"></i>
           </button>
         </div>
         <div class="amount-side fw-semibold">
@@ -137,11 +137,11 @@
           @php
         // Menjumlahkan semua 'amount' untuk user ini yang sudah dibayarkan
         $totalAmount = $member->kas->where('is_payment', true)->sum('amount');
-      @endphp
+    @endphp
           Rp. {{ number_format($totalAmount, 0, ',', '.') }}
           </td>
           <td class="align-middle">
-          <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+          <button type="button" class="btn btn-primary shadow-none" data-bs-toggle="modal"
           data-bs-target="#payKasModal-{{ $member->user_id }}">
           <i class="fa-solid fa-money-bill-wave"></i> Bayar
           </button>
@@ -174,7 +174,7 @@
     <div class="modal-content">
       <div class="modal-header">
       <h1 class="modal-title fs-5" id="payKasModalLabel">Bayar Kas</h1>
-      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      <button type="button" class="btn-close shadow-none" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
       <form action="{{ route('pay-kas', $member->user_id) }}" method="POST">
@@ -188,8 +188,8 @@
       </select>
       </div>
       <div class="modal-footer">
-      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-      <button type="submit" class="btn btn-primary">Bayar</button>
+      <button type="button" class="btn btn-secondary shadow-none" data-bs-dismiss="modal">Close</button>
+      <button type="submit" class="btn btn-primary shadow-none">Bayar</button>
       </div>
       </form>
       </div>
@@ -225,7 +225,7 @@
         setKasValue.text(response.cash);
         setKasValue.removeClass('d-none');
         setKasInput.addClass('d-none');
-        toggleBtn.html('<i class="fa-solid fa-pen"></i> Edit');
+        toggleBtn.html('<i class="fa-solid fa-pen text-white"></i> Edit');
         isEditing = false;
         },
         error: function (xhr, status, error) {

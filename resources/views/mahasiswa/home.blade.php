@@ -24,20 +24,20 @@
                                         <p class="card-text">{{ $ukm->description }}</p>
                                         @if ($ukm->registration_status == 'active')
                                             @if (in_array($ukm->ukm_id, $ukmFollowed))
-                                                <button class="btn btn-primary" disabled>Terdaftar</button>
+                                                <button class="btn btn-primary shadow-none w-100" disabled>Terdaftar</button>
                                             @else
                                                 <form action="{{ route('ukm.join') }}" method="POST">
                                                     @csrf
                                                     <input type="hidden" name="ukm" value="{{ $ukm->ukm_id }}">
-                                                    <button type="submit" class="btn btn-primary w-100">Daftar</button>
+                                                    <button type="submit" class="btn btn-primary shadow-none w-100">Daftar</button>
                                                 </form>
                                             @endif
                                         @else
                                             @if (in_array($ukm->ukm_id, $ukmFollowed))
                                                 <a href="{{ route('home.detail', ['ukm_id' => $ukm->ukm_id]) }}"
-                                                    class="btn btn-primary w-100">Detail</a>
+                                                    class="btn btn-primary shadow-none w-100">Detail</a>
                                             @else
-                                                <button class="btn btn-secondary w-100" disabled>Pendaftaran Ditutup</button>
+                                                <button class="btn btn-secondary shadow-none w-100" disabled>Pendaftaran Ditutup</button>
                                             @endif
                                         @endif
                                     </div>

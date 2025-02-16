@@ -76,7 +76,7 @@
         <form action="{{ route('manage-anggota.index') }}" method="GET" class="d-flex gap-2">
           <input type="text" name="search" class="form-control shadow-none border-0 pr-4 py-2 fw-semibold"
           placeholder="Search" style="font-size: 12px;" value="{{ request('search') }}">
-          <button type="submit" class="btn btn-primary">
+          <button type="submit" class="btn btn-primary shadow-none">
           <i class="fa-solid fa-magnifying-glass"></i>
           </button>
         </form>
@@ -84,10 +84,12 @@
       </div>
       <hr>
       <div class="d-flex justify-content-end gap-3 mb-3">
-        <button type="button" class="custom-btn btn-excel" data-bs-toggle="modal" data-bs-target="#importMember">
+        <button type="button" class="custom-btn btn-excel shadow-none" data-bs-toggle="modal"
+        data-bs-target="#importMember">
         <i class="fa-solid fa-file-export"></i>Export Anggota
         </button>
-        <button type="button" class="custom-btn btn-tambah" data-bs-toggle="modal" data-bs-target="#addMember">
+        <button type="button" class="custom-btn btn-tambah shadow-none" data-bs-toggle="modal"
+        data-bs-target="#addMember">
         <i class="fa-solid fa-plus"></i>Tambah Anggota
         </button>
       </div>
@@ -122,11 +124,11 @@
         <td class="align-middle">
         <button type="button" class="btn" data-bs-toggle="modal"
         data-bs-target="#updateMember-{{ $member->user_id }}">
-        <i class="fa-regular fa-pen-to-square text-warning"></i>
+        <i class="fa-regular fa-pen-to-square text-warning shadow-none"></i>
         </button>
         <button type="button" class="btn" data-bs-toggle="modal"
         data-bs-target="#deleteMember-{{ $member->user_id }}">
-        <i class="fa-regular fa-trash-can text-danger"></i>
+        <i class="fa-regular fa-trash-can text-danger shadow-none"></i>
         </button>
         </td>
       </tr>
@@ -155,7 +157,7 @@
     <div class="modal-content">
       <div class="modal-header">
       <h1 class="modal-title fs-5" id="exampleModalLabel">Tambah Anggota</h1>
-      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      <button type="button" class="btn-close shadow-none" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
       <form action="{{ route('manage-anggota.store') }}" method="POST">
@@ -170,8 +172,8 @@
 
         </div>
         <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <button type="submit" class="btn btn-primary">Save changes</button>
+        <button type="button" class="btn btn-secondary shadow-none" data-bs-dismiss="modal">Close</button>
+        <button type="submit" class="btn btn-primary shadow-none">Save changes</button>
         </div>
       </form>
       </div>
@@ -187,7 +189,7 @@
     <div class="modal-content">
       <div class="modal-header">
       <h1 class="modal-title fs-5" id="exampleModalLabel">Ubah Anggota</h1>
-      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      <button type="button" class="btn-close shadow-none" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
       <form action="{{ route('manage-anggota.update', $member->user_id) }}" method="POST">
@@ -202,8 +204,8 @@
       </select>
       </div>
       <div class="modal-footer">
-      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-      <button type="submit" class="btn btn-primary">Save changes</button>
+      <button type="button" class="btn btn-secondary shadow-none" data-bs-dismiss="modal">Close</button>
+      <button type="submit" class="btn btn-primary shadow-none">Save changes</button>
       </div>
       </form>
       </div>
@@ -220,7 +222,7 @@
     <div class="modal-content">
       <div class="modal-header">
       <h1 class="modal-title fs-5" id="exampleModalLabel">Hapus User</h1>
-      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      <button type="button" class="btn-close shadow-none" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
       <form action="{{ route('manage-anggota.destroy', $member->user_id) }}" method="POST">
@@ -228,8 +230,8 @@
       @method('DELETE')
       Apakah kamu yakin ingin mengeluarkan user ini {{$member->email}}
       <div class="modal-footer">
-      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-      <button type="submit" class="btn btn-danger">Hapus User</button>
+      <button type="button" class="btn btn-secondary shadow-none" data-bs-dismiss="modal">Close</button>
+      <button type="submit" class="btn btn-danger shadow-none">Hapus User</button>
       </div>
       </form>
       </div>
