@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Logs;
+use App\Rules\CustomValidation;
+use Illuminate\Validation\Rule;
 
 class AuthController extends Controller
 {
@@ -12,9 +14,12 @@ class AuthController extends Controller
     {
         return view('login');
     }
+
+
     public function login(Request $request)
     {
         $credentials = $request->validate([
+            'nim' => ['required', 'string', new CustomValidation], // Gunakan custom rule
             'email' => 'required|email',
             'password' => 'required',
         ]);
@@ -24,28 +29,28 @@ class AuthController extends Controller
 
             switch ($user->role) {
                 case 'Admin':
-                    $currrent_user = Auth::user()->email;
+                    $current_user = Auth::user()->email;
                     $logs = Logs::create([
                         'user_id' => Auth::id(),
-                        'activity' => "$currrent_user melakukan login",
+                        'activity' => "$current_user melakukan login",
                     ]);
 
                     $logs->save();
                     return redirect()->route('dashboard-admin.index');
                 case 'BPH_UKM':
-                    $currrent_user = Auth::user()->email;
+                    $current_user = Auth::user()->email;
                     $logs = Logs::create([
                         'user_id' => Auth::id(),
-                        'activity' => "$currrent_user melakukan login",
+                        'activity' => "$current_user melakukan login",
                     ]);
 
                     $logs->save();
                     return redirect()->route('dashboard-ukm.index');
                 case 'Mahasiswa':
-                    $currrent_user = Auth::user()->email;
+                    $current_user = Auth::user()->email;
                     $logs = Logs::create([
                         'user_id' => Auth::id(),
-                        'activity' => "$currrent_user melakukan login",
+                        'activity' => "$current_user melakukan login",
                     ]);
 
                     $logs->save();
@@ -56,7 +61,7 @@ class AuthController extends Controller
             }
         }
 
-        return redirect()->route('login')->withErrors('Email atau password salah.');
+        return redirect()->route('login')->withErrors('Email, NIM, atau password salah.');
     }
 
     public function logout()
