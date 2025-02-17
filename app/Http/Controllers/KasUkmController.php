@@ -5,8 +5,11 @@ namespace App\Http\Controllers;
 use App\Models\Activity;
 use App\Models\Kas;
 use App\Models\Ukm;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
 class KasUkmController extends Controller
 {
@@ -96,5 +99,68 @@ class KasUkmController extends Controller
         $kas->save();
 
         return redirect()->back()->with('success', 'Pembayaran kas berhasil disimpan!');
+    }
+
+    public function exportKas(Request $request)
+    {
+        $current_user = Auth::user();
+        $ukm_id = $current_user->bphUkm->ukm_id;
+
+        // Ambil data kas dengan relasi user dan kegiatan
+        $kas = Kas::where('ukm_id', $ukm_id)
+            ->where('is_payment', true)
+            ->with(['user', 'activity']) // Pastikan relasi sudah didefinisikan
+            ->get();
+
+        $activities = Activity::where('ukm_id', $ukm_id)->orderBy('date', 'asc')->get();
+
+        // Buat objek Spreadsheet
+        $spreadsheet = new Spreadsheet();
+        $sheet = $spreadsheet->getActiveSheet();
+
+        // Header tabel (sesuai dengan tampilan di web)
+        $sheet->setCellValue('A1', 'No');
+        $sheet->setCellValue('B1', 'Email');
+
+        $colIndex = 'C'; // Mulai dari kolom C untuk kegiatan
+        foreach ($activities as $activity) {
+            $sheet->setCellValue($colIndex . '1', $activity->date);
+            $colIndex++;
+        }
+
+        $sheet->setCellValue($colIndex . '1', 'Jumlah');
+
+        // Isi data (per anggota UKM)
+        $row = 2; // Mulai dari baris kedua
+        $no = 1;
+        $users = User::whereHas('kas', function ($query) use ($ukm_id) {
+            $query->where('ukm_id', $ukm_id);
+        })->get();
+
+        foreach ($users as $user) {
+            $sheet->setCellValue('A' . $row, $no++);
+            $sheet->setCellValue('B' . $row, $user->email);
+
+            $colIndex = 'C';
+            foreach ($activities as $activity) {
+                $kasEntry = $kas->where('user_id', $user->user_id)->where('activities_id', $activity->activities_id)->first();
+                $status = $kasEntry ? '✔' : '✘';
+                $sheet->setCellValue($colIndex . $row, $status);
+                $colIndex++;
+            }
+            $totalAmount = $kas->where('user_id', $user->id)->sum('amount');
+            $sheet->setCellValue($colIndex . $row, "Rp. " . number_format($totalAmount, 0, ',', '.'));
+
+            $row++;
+        }
+
+        // Simpan file sementara
+        $filename = 'kas-ukm-' . $current_user->bphUkm->name_ukm . '.xlsx';
+        $writer = new Xlsx($spreadsheet);
+        $tempFilePath = storage_path('app/' . $filename);
+        $writer->save($tempFilePath);
+
+        // Download file
+        return response()->download($tempFilePath, $filename)->deleteFileAfterSend(true);
     }
 }

@@ -84,10 +84,9 @@
       </div>
       <hr>
       <div class="d-flex justify-content-end gap-3 mb-3">
-        <button type="button" class="custom-btn btn-excel shadow-none" data-bs-toggle="modal"
-        data-bs-target="#importMember">
+        <a href="{{ route('eksport-anggota') }}" class="custom-btn btn-excel shadow-none">
         <i class="fa-solid fa-file-export"></i>Export Anggota
-        </button>
+        </a>
         <button type="button" class="custom-btn btn-tambah shadow-none" data-bs-toggle="modal"
         data-bs-target="#addMember">
         <i class="fa-solid fa-plus"></i>Tambah Anggota

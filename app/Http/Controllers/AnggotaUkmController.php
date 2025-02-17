@@ -10,6 +10,8 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
 class AnggotaUkmController extends Controller
 {
@@ -167,5 +169,66 @@ class AnggotaUkmController extends Controller
         $mahasiswa->ukm()->attach($ukm);
 
         return redirect()->route('home.index')->with('success', 'Berhasil mendaftar UKM.');
+    }
+
+    public function exportAnggota(Request $request)
+    {
+        $current_user = Auth::user();
+        $ukm = $current_user->bphUkm;
+
+        // Ambil data anggota UKM
+        $members = $ukm->members;
+
+        // Buat objek Spreadsheet
+        $spreadsheet = new Spreadsheet();
+        $sheet = $spreadsheet->getActiveSheet();
+
+        // Header tabel
+        $sheet->setCellValue('A1', 'NIM');
+        $sheet->setCellValue('B1', 'Email');
+        $sheet->setCellValue('C1', 'Kehadiran');
+        $sheet->setCellValue('D1', 'Kas');
+        $sheet->setCellValue('E1', 'Status Aktif UKM'); // Kolom baru untuk status aktif
+
+        // Isi data
+        $row = 2; // Mulai dari baris kedua
+        foreach ($members as $member) {
+            // Hitung presentase kehadiran dan kas
+            $totalActivities = Activity::where('ukm_id', $ukm->ukm_id)->count();
+            $totalAttendance = Attendances::where('user_id', $member->user_id)
+                ->where('is_present', true)
+                ->count();
+            $attendancePercentage = ($totalActivities > 0) ? round(($totalAttendance / $totalActivities) * 100, 2) : 0;
+
+            $totalKas = Kas::where('ukm_id', $ukm->ukm_id)
+                ->where('user_id', $member->user_id)
+                ->count();
+            $totalPaidKas = Kas::where('user_id', $member->user_id)
+                ->where('ukm_id', $ukm->ukm_id)
+                ->where('is_payment', true)
+                ->count();
+            $kasPercentage = ($totalKas > 0) ? round(($totalPaidKas / $totalKas) * 100, 2) : 0;
+
+            // Tentukan status aktif
+            $isActive = ($kasPercentage == 100 && $attendancePercentage >= 75);
+            $statusAktif = $isActive ? 'Aktif' : 'Tidak Aktif';
+
+            // Isi data ke spreadsheet
+            $sheet->setCellValue('A' . $row, $member->nim);
+            $sheet->setCellValue('B' . $row, $member->email);
+            $sheet->setCellValue('C' . $row, $attendancePercentage . '%');
+            $sheet->setCellValue('D' . $row, $kasPercentage . '%');
+            $sheet->setCellValue('E' . $row, $statusAktif); // Kolom status aktif
+            $row++;
+        }
+
+        // Simpan file sementara
+        $filename = 'anggota_' . $ukm->name_ukm . '.xlsx';
+        $writer = new Xlsx($spreadsheet);
+        $tempFilePath = storage_path('app/' . $filename);
+        $writer->save($tempFilePath);
+
+        // Download file
+        return response()->download($tempFilePath, $filename)->deleteFileAfterSend(true);
     }
 }

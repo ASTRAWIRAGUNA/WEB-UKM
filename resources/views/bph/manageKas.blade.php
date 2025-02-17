@@ -101,9 +101,9 @@
 
         </div>
         <div class="button-side">
-        <button type="button" class="custom-btn btn-excel" data-bs-toggle="modal" data-bs-target="#importUser">
+        <a href="{{ route('eksport-kas') }}" class="custom-btn btn-excel shadow-none">
           <i class="fa-solid fa-file-export"></i>Export Kas
-        </button>
+        </a>
         </div>
       </div>
 
@@ -141,9 +141,9 @@
           Rp. {{ number_format($totalAmount, 0, ',', '.') }}
           </td>
           <td class="align-middle">
-          <button type="button" class="btn btn-primary shadow-none" data-bs-toggle="modal"
+          <button type="button" class="btn shadow-none" data-bs-toggle="modal"
           data-bs-target="#payKasModal-{{ $member->user_id }}">
-          <i class="fa-solid fa-money-bill-wave"></i> Bayar
+          <i class="fa-solid fa-money-bill-wave text-success"></i>
           </button>
           </td>
         </tr>

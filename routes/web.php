@@ -40,10 +40,12 @@ Route::middleware(['auth', RoleMiddleware::class . ':BPH_UKM'])->group(function 
     Route::resource('/dashboard-ukm', DashboardUkmController::class);
     Route::put('update/{ukm_id}', [DashboardUkmController::class, 'update'])->name('update.profile');
     Route::resource('/manage-anggota', controller: AnggotaUkmController::class);
+    Route::get('export-anggota', [AnggotaUkmController::class, 'exportAnggota'])->name('eksport-anggota');
     Route::resource('/manage-kegiatan-ukm', KegiatanUkmController::class);
     Route::get('/manage-kas-ukm', [KasUkmController::class, 'index'])->name('manage-kas-ukm.index');
     Route::post('/setKas', [KasUkmController::class, 'setKas'])->name('setKas');
     Route::post('/pay-kas/{user_id}', [KasUkmController::class, 'payKas'])->name('pay-kas');
+    Route::get('/eksport-kas', [KasUkmController::class, 'exportKas'])->name('eksport-kas');
 });
 
 // Route untuk Mahasiswa
