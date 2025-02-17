@@ -20,8 +20,7 @@ Route::get('/', [AuthController::class, 'showLoginForm'])->name('login')->middle
 Route::post('/auth/login', [AuthController::class, 'login'])->name('auth.login');
 Route::post('/logout', [AuthController::class, 'logout'])->name('auth.logout')->middleware('auth');
 
-Route::resource('/manage-user', UserController::class);
-Route::post('/import-user', [UserController::class, 'importUser'])->name('import-user');
+
 
 // Admin route
 Route::middleware(['auth', RoleMiddleware::class . ':Admin'])->group(function () {
@@ -33,6 +32,8 @@ Route::middleware(['auth', RoleMiddleware::class . ':Admin'])->group(function ()
     Route::resource('/manage-ukm', UkmController::class);
     Route::resource('/manage-laporan-ukm', LaporanUkmController::class);
     Route::resource('/log-activity', LogActivityController::class);
+    Route::resource('/manage-user', UserController::class);
+    Route::post('/import-user', [UserController::class, 'importUser'])->name('import-user');
 });
 
 // Route untuk BPH_UKM
