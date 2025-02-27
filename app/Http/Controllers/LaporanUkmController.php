@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Activity;
+use App\Models\Logs;
 
 class LaporanUkmController extends Controller
 {
@@ -42,6 +43,14 @@ class LaporanUkmController extends Controller
         $kegiatan->message = $request->message;
         $kegiatan->status_activity = $request->status_activity;
         $kegiatan->save();
+
+        $currrent_user = Auth::user()->email;
+        $logs = Logs::create([
+            'user_id' => Auth::id(),
+            'activity' => "$currrent_user memberikan status $request->status_activity pada kegiatan $kegiatan->name_activity",
+        ]);
+
+        $logs->save();
 
         return redirect()->route('manage-laporan-ukm.index')->with('success', 'Status kegiatan berhasil diperbarui.');
     }

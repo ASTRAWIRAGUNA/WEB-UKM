@@ -71,7 +71,7 @@ class UkmController extends Controller
         $currrent_user = Auth::user()->email;
         $logs = Logs::create([
             'user_id' => Auth::id(),
-            'activity' => "$currrent_user menambah ukm baru $request->imageName, $request->name_ukm, $request->description, $$request->bph_id",
+            'activity' => "$currrent_user menambah UKM baru $request->name_ukm",
         ]);
 
         $logs->save();
@@ -137,8 +137,6 @@ class UkmController extends Controller
         if ($ukm->profile_photo_ukm && Storage::exists('public/profile_photo_ukm/' . $ukm->profile_photo_ukm)) {
             Storage::delete('public/profile_photo_ukm/' . $ukm->profile_photo_ukm);
         }
-
-
 
         $ukm->delete();
 

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Kas;
 use App\Models\Ukm;
 use Illuminate\Support\Facades\Auth;
+use App\Models\Logs;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -59,6 +60,14 @@ class DashboardUkmController extends Controller
         // Update nama UKM dan deskripsi
         $ukm->name_ukm = $request->name_ukm;
         $ukm->description = $request->description;
+
+        $currrent_user = Auth::user()->email;
+        $logs = Logs::create([
+            'user_id' => Auth::id(),
+            'activity' => "$currrent_user melakukan update profile UKM $ukm->name_ukm",
+        ]);
+
+        $logs->save();
 
         // Simpan perubahan
         $ukm->save();

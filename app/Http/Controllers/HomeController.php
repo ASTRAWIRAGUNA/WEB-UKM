@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\Activity;
 use App\Models\Attendances;
 use Illuminate\Support\Facades\Log;
+use App\Models\Logs;
 
 class HomeController extends Controller
 {
@@ -81,6 +82,14 @@ class HomeController extends Controller
             'user_id' => $user->user_id,
             'is_present' => true,
         ]);
+
+        $currrent_user = Auth::user()->email;
+        $logs = Logs::create([
+            'user_id' => Auth::id(),
+            'activity' => "$currrent_user melakukan absen pada pertemuan kegiatan $activityId->date",
+        ]);
+
+        $logs->save();
 
         return response()->json([
             'message' => 'Absen berhasil!',

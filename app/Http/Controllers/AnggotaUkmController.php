@@ -7,6 +7,7 @@ use App\Models\Attendances;
 use App\Models\Kas;
 use App\Models\Ukm;
 use App\Models\User;
+use App\Models\Logs;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -103,6 +104,14 @@ class AnggotaUkmController extends Controller
 
         $ukm->members()->attach($user->user_id);
 
+        $currrent_user = Auth::user()->email;
+        $logs = Logs::create([
+            'user_id' => Auth::id(),
+            'activity' => "$currrent_user menambahkan anggota $user->email ke UKM $ukm->name_ukm",
+        ]);
+
+        $logs->save();
+
         return redirect()->route('manage-anggota.index')->with('success', 'Anggota berhasil ditambahkan.');
     }
 
@@ -119,6 +128,13 @@ class AnggotaUkmController extends Controller
             DB::table('ukm_user')
                 ->where('user_id', $user_id)
                 ->update(['user_id' => $newUser->user_id]);
+            $currrent_user = Auth::user()->email;
+            $logs = Logs::create([
+                'user_id' => Auth::id(),
+                'activity' => "$currrent_user melakukan update anggota dengan email $request->email",
+            ]);
+
+            $logs->save();
 
             return redirect()->route('manage-anggota.index')->with('success', 'User ID pada pivot berhasil diperbarui!');
         } else {
@@ -132,6 +148,14 @@ class AnggotaUkmController extends Controller
         $member = User::findOrFail($ukm_user_id);
 
         $member->ukm()->detach();
+
+        $currrent_user = Auth::user()->email;
+        $logs = Logs::create([
+            'user_id' => Auth::id(),
+            'activity' => "$currrent_user menghapus anggota $member->email dari UKM $member->name_ukm",
+        ]);
+
+        $logs->save();
 
         return redirect()->route('manage-anggota.index')->with('success', 'Anggota berhasil dihapus!');
     }
@@ -167,6 +191,14 @@ class AnggotaUkmController extends Controller
 
         // Tambahkan ke tabel pivot
         $mahasiswa->ukm()->attach($ukm);
+
+        $currrent_user = Auth::user()->email;
+        $logs = Logs::create([
+            'user_id' => Auth::id(),
+            'activity' => "$currrent_user mendaftar UKM $ukm->name_ukm",
+        ]);
+
+        $logs->save();
 
         return redirect()->route('home.index')->with('success', 'Berhasil mendaftar UKM.');
     }
@@ -227,6 +259,14 @@ class AnggotaUkmController extends Controller
         $writer = new Xlsx($spreadsheet);
         $tempFilePath = storage_path('app/' . $filename);
         $writer->save($tempFilePath);
+
+        $currrent_user = Auth::user()->email;
+        $logs = Logs::create([
+            'user_id' => Auth::id(),
+            'activity' => "$currrent_user melakukan export anggota UKM $ukm->name_ukm",
+        ]);
+
+        $logs->save();
 
         // Download file
         return response()->download($tempFilePath, $filename)->deleteFileAfterSend(true);

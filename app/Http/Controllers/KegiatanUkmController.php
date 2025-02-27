@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use App\Models\Ukm;
 use App\Models\Activity;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
+use App\Models\Logs;
 
 class KegiatanUkmController extends Controller
 {
@@ -69,6 +70,14 @@ class KegiatanUkmController extends Controller
             'qr_code' => str_replace('public/', '', $qr_codePath),
         ]);
 
+        $currrent_user = Auth::user()->email;
+        $logs = Logs::create([
+            'user_id' => Auth::id(),
+            'activity' => "$currrent_user membuat kegiatan baru $request->name_activity",
+        ]);
+
+        $logs->save();
+
         return redirect()->route('manage-kegiatan-ukm.index')->with('success', 'Berhasil Membuat Kegiatan UKM.');
     }
 
@@ -118,6 +127,14 @@ class KegiatanUkmController extends Controller
             'status_activity' => 'Pending',
         ]);
 
+        $currrent_user = Auth::user()->email;
+        $logs = Logs::create([
+            'user_id' => Auth::id(),
+            'activity' => "$currrent_user mengupdate kegiatan baru $request->name_activity",
+        ]);
+
+        $logs->save();
+
         return redirect()->route('manage-kegiatan-ukm.index')->with('success', 'UKM berhasil diperbarui!');
     }
 
@@ -138,6 +155,14 @@ class KegiatanUkmController extends Controller
         if ($kegiatan->qr_code && Storage::exists('public/' . $kegiatan->qr_code)) {
             Storage::delete('public/' . $kegiatan->qr_code);
         }
+
+        $currrent_user = Auth::user()->email;
+        $logs = Logs::create([
+            'user_id' => Auth::id(),
+            'activity' => "$currrent_user menghapus kegiatan $kegiatan->name_activity",
+        ]);
+
+        $logs->save();
 
         // Menghapus record kegiatan
         $kegiatan->delete();

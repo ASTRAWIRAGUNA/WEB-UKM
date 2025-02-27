@@ -6,6 +6,7 @@ use App\Models\Activity;
 use App\Models\Kas;
 use App\Models\Ukm;
 use App\Models\User;
+use App\Models\Logs;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
@@ -56,6 +57,14 @@ class KasUkmController extends Controller
             ['cash' => $request->cash]
         );
 
+        $currrent_user = Auth::user()->email;
+        $logs = Logs::create([
+            'user_id' => Auth::id(),
+            'activity' => "$currrent_user meng-set uang kas sebesar Rp. $kas->cash",
+        ]);
+
+        $logs->save();
+
         // Mengembalikan response JSON
         return response()->json([
             'cash' => $kas->cash,
@@ -95,6 +104,14 @@ class KasUkmController extends Controller
             'amount' => $amount,
             'is_payment' => true,
         ]);
+
+        $currrent_user = Auth::user()->email;
+        $logs = Logs::create([
+            'user_id' => Auth::id(),
+            'activity' => "$currrent_user melakukan pembayaran kas kepada user dengan id $user_id->email pada pertemuan kegiatan $activity->date",
+        ]);
+
+        $logs->save();
 
         $kas->save();
 
@@ -159,6 +176,14 @@ class KasUkmController extends Controller
         $writer = new Xlsx($spreadsheet);
         $tempFilePath = storage_path('app/' . $filename);
         $writer->save($tempFilePath);
+
+        $currrent_user = Auth::user()->email;
+        $logs = Logs::create([
+            'user_id' => Auth::id(),
+            'activity' => "$currrent_user meng-eksport kas UKM",
+        ]);
+
+        $logs->save();
 
         // Download file
         return response()->download($tempFilePath, $filename)->deleteFileAfterSend(true);

@@ -6,6 +6,8 @@ use App\Models\Activity;
 use App\Models\User;
 use Illuminate\Http\Request;
 use App\Models\Ukm;
+use Illuminate\Support\Facades\Auth;
+use App\Models\Logs;
 
 class DashboardAdminController extends Controller
 {
@@ -34,6 +36,21 @@ class DashboardAdminController extends Controller
 
         Ukm::query()->update(['registration_status' => $status]);
 
+        $currrent_user = Auth::user()->email;
+
+        if ($status == 'active') {
+            $logs = Logs::create([
+                'user_id' => Auth::id(),
+                'activity' => "$currrent_user mengaktifkan status registrasi semua UKM",
+            ]);
+            $logs->save();
+        } else {
+            $logs = Logs::create([
+                'user_id' => Auth::id(),
+                'activity' => "$currrent_user menonaktifkan status registrasi semua UKM",
+            ]);
+            $logs->save();
+        }
 
         return response()->json([
             'message' => 'Status UKM telah diperbarui!',
@@ -50,6 +67,14 @@ class DashboardAdminController extends Controller
 
         // Update semua UKM dengan nilai minimal kegiatan yang baru
         Ukm::query()->update(['min_activity' => $request->input('min_activity')]);
+
+        $currrent_user = Auth::user()->email;
+        $logs = Logs::create([
+            'user_id' => Auth::id(),
+            'activity' => "$currrent_user men-set minimal kegiatan sebesar $request->min_activity",
+        ]);
+
+        $logs->save();
 
         return response()->json([
 

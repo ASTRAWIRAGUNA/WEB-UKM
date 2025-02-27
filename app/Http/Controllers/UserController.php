@@ -53,13 +53,13 @@ class UserController extends Controller
             'role' => $request->role,
         ]);
 
-        // $currrent_user = Auth::user()->email;
-        // $logs = Logs::create([
-        //     'user_id' => Auth::id(),
-        //     'activity' => "$currrent_user mengupdate user baru dengan nim {$user->nim}",
-        // ]);
+        $currrent_user = Auth::user()->email;
+        $logs = Logs::create([
+            'user_id' => Auth::id(),
+            'activity' => "$currrent_user menambah user baru $user",
+        ]);
 
-        // $logs->save();
+        $logs->save();
 
         $user->save();
 
@@ -109,7 +109,7 @@ class UserController extends Controller
         $currrent_user = Auth::user()->email;
         $logs = Logs::create([
             'user_id' => Auth::id(),
-            'activity' => "$currrent_user mengupdate ukm baru $userToDelete",
+            'activity' => "$currrent_user mengupdate user baru $userToDelete",
         ]);
 
         $logs->save();
@@ -144,6 +144,14 @@ class UserController extends Controller
                     'password' => Hash::make($row[2]),
                     'role' => $row[3],
                 ]);
+
+                $currrent_user = Auth::user()->email;
+                $logs = Logs::create([
+                    'user_id' => Auth::id(),
+                    'activity' => "$currrent_user menambahkan user baru",
+                ]);
+
+                $logs->save();
             }
 
             return redirect()->back()->with('success', 'Users imported successfully.');
