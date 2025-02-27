@@ -59,7 +59,7 @@
   @endforelse
         </tbody>
       </table>
-      <div class="d-flex justify-content-center">
+      <div class="pagination d-flex justify-content-end align-items-center">
         <nav aria-label="Page navigation">
         <ul class="pagination">
           {{ $logs->appends(['search' => request('search')])->onEachSide(1)->links('pagination::bootstrap-5') }}
